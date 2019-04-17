@@ -1,0 +1,55 @@
+<div>
+  <div>
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+      <div>
+        <p>Username</p>
+        <input
+          type="text"
+          formControlName="username">
+        <span
+          *ngIf="!signupForm.get('username').valid && signupForm.get('username').touched">
+          Please enter a valid username</span>
+      </div>
+
+      <div>
+        <p>Email</p>
+        <input
+          type="text"
+          formControlName="email">
+        <span
+          *ngIf="!signupForm.get('email').valid && signupForm.get('email').touched">
+          Please enter a valid email</span>
+      </div>
+
+      <div>
+        <p>Password</p>
+        <input
+          type="password"
+          formControlName="password">
+        <span
+          *ngIf="signupForm.get('password').invalid && signupForm.get('password').touched">
+          Please enter a valid password</span>
+      </div>
+
+      <div>
+        <p>Repeat password</p>
+        <input
+          type="password"
+          formControlName="submitPsw">
+        <span *ngIf="signupForm.get('submitPsw').invalid && signupForm.get('submitPsw').touched">
+          Please enter a password
+        </span>
+        <span
+          *ngIf="signupForm.get('submitPsw').value !== signupForm.get('password').value && signupForm.get('submitPsw').touched">
+          Please enter the same password</span>
+      </div>
+      <button
+        type="submit"
+        [disabled]="signupForm.invalid">
+        Get Started
+      </button>
+    </form>
+  </div>
+</div>
+

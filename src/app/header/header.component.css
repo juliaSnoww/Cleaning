@@ -1,0 +1,11 @@
+.navbar-default {
+  background-color: currentColor;
+}
+
+.right {
+  float: right;
+}
+
+a:hover {
+  color: darkred  !important;
+}

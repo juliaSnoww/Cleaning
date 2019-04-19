@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
 import {AuthService} from '../auth.service';
 
 @Component({
@@ -11,8 +10,7 @@ import {AuthService} from '../auth.service';
 export class SignupComponent implements OnInit {
   signupForm: FormGroup;
 
-  constructor(private http: HttpClient,
-              private authService: AuthService) {
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -20,7 +18,7 @@ export class SignupComponent implements OnInit {
       username: new FormControl('jul', Validators.required),
       email: new FormControl('test@mail.ru', [Validators.required, Validators.email]),
       password: new FormControl('123', Validators.required),
-      submitPsw: new FormControl('123', Validators.required)
+      confirmPass: new FormControl('123', Validators.required)
     });
   }
 
@@ -31,5 +29,7 @@ export class SignupComponent implements OnInit {
       this.signupForm.get('password').value
     );
   }
+
+
 
 }

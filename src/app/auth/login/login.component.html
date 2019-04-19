@@ -1,0 +1,43 @@
+<div class="root">
+  <div>
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+
+      <div>
+        <p>Username</p>
+        <input
+          type="text"
+          formControlName="username"
+          autocomplete="on" >
+        <span
+          *ngIf="!loginForm.get('username').valid && loginForm.get('username').touched">
+          Please enter a valid username</span>
+      </div>
+
+      <div>
+        <p>Email</p>
+        <input
+          type="text"
+          formControlName="email">
+        <span
+          *ngIf="!loginForm.get('email').valid && loginForm.get('email').touched">
+          Please enter a valid email</span>
+      </div>
+
+      <div>
+        <p>Password</p>
+        <input
+          type="password"
+          formControlName="password">
+        <span
+          *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched">
+          Please enter a valid password</span>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid">
+        Login
+      </button>
+    </form>
+  </div>
+</div>

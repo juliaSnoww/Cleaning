@@ -1,4 +1,4 @@
-<div>
+<div class="root">
   <div>
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
 
@@ -36,12 +36,12 @@
         <p>Repeat password</p>
         <input
           type="password"
-          formControlName="submitPsw">
-        <span *ngIf="signupForm.get('submitPsw').invalid && signupForm.get('submitPsw').touched">
+          formControlName="confirmPass">
+        <span *ngIf="signupForm.get('confirmPass').invalid && signupForm.get('confirmPass').touched">
           Please enter a password
         </span>
         <span
-          *ngIf="signupForm.get('submitPsw').value !== signupForm.get('password').value && signupForm.get('submitPsw').touched">
+          *ngIf="signupForm.get('confirmPass').value !== signupForm.get('password').value && signupForm.get('confirmPass').touched">
           Please enter the same password</span>
       </div>
       <button

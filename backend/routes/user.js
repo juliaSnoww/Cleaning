@@ -22,9 +22,7 @@ router.post("/signup", (req, res, next) => {
             })
           })
           .catch(err => {
-            res.status(500).json({
-              err
-            })
+            res.status(500).json({err})
           })
       })
   }
@@ -32,6 +30,7 @@ router.post("/signup", (req, res, next) => {
 
 router.post('/login', (req, res, next) => {
   let fetchedUser;
+
   User.find({email: req.body.email})
     .then(user => {
       if (!user) {
@@ -53,12 +52,9 @@ router.post('/login', (req, res, next) => {
           email: fetchedUser.email,
           userId: fetchedUser._id
         },
-        'secret',
-        {expiresIn: '1h'}
+        'secret'
       );
-      res.status(200).json({
-        token
-      })
+      res.status(200).json({token})
     })
     .catch(err => {
       return res.status(401).json({

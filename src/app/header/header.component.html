@@ -6,9 +6,14 @@
 
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav right">
+        <li *ngIf="userAuth" routerLinkActive="active"><a routerLink="/profile">Profile</a></li>
         <li *ngIf="!userAuth" routerLinkActive="active"><a routerLink="/login">Login</a></li>
         <li *ngIf="!userAuth" routerLinkActive="active"><a routerLink="/signup">Signup</a></li>
-        <li *ngIf="userAuth"><button class="btn" style="height: 50px">Logout</button></li>
+        <li *ngIf="userAuth">
+          <button class="btn" style="height: 50px" (click)="onLogout()">
+            Logout
+          </button>
+        </li>
       </ul>
     </div>
   </div>

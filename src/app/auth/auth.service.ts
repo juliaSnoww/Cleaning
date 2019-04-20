@@ -1,21 +1,28 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {Subject} from 'rxjs';
+import {Router} from '@angular/router';
 
 import {AuthData} from './auth.model';
-import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private token: string;
+  private isAuthenticated = false;
   private authStatusListener = new Subject();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private router: Router) {
   }
 
   getToken() {
     return this.token;
+  }
+
+  getIsAuth() {
+    return this.isAuthenticated;
   }
 
   getAuthStatus() {
@@ -35,12 +42,48 @@ export class AuthService {
     const authData: AuthData = {username, email, password};
     this.http.post<{ token: string }>('http://localhost:3000/api/user/login', authData)
       .subscribe(response => {
+        this.isAuthenticated = true;
         this.token = response.token;
-        console.log(response);
         this.authStatusListener.next(true);
+        this.saveAuthData(this.token);
+        this.router.navigate(['/']);
       });
   }
 
+  autoAuthUser() {
+    const authInformation = this.getAuthData();
+    if (!authInformation) {
+      return;
+    }
+    this.token = authInformation.token;
+    this.isAuthenticated = true;
+    this.authStatusListener.next(true);
+
+  }
+
+  logout() {
+    this.token = null;
+    this.isAuthenticated = false;
+    this.authStatusListener.next(false);
+    this.clearAuthData();
+    this.router.navigate(['/']);
+  }
+
+  private saveAuthData(token: string) {
+    localStorage.setItem('token', token);
+  }
+
+  private clearAuthData() {
+    localStorage.removeItem('token');
+  }
+
+  private getAuthData() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return;
+    }
+    return {token};
+  }
 }
 
 

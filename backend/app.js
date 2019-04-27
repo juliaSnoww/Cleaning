@@ -11,7 +11,7 @@ const MongoStore = require('connect-mongo')(session);
 const app = express();
 
 mongoose
-  .connect('mongodb+srv://yulek:DPuvQGHTIu6ki95O@cluster0-ikzkx.mongodb.net/test', {useNewUrlParser: true})
+  .connect('mongodb://yulek:DPuvQGHTIu6ki95O@cluster0-shard-00-00-ikzkx.mongodb.net:27017,cluster0-shard-00-01-ikzkx.mongodb.net:27017,cluster0-shard-00-02-ikzkx.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true', {useNewUrlParser: true})
   .then(() => {
     console.log('Connected to DataBase');
   })
@@ -20,7 +20,14 @@ mongoose
   });
 
 const sessionStore = new MongoStore({
-  url: 'mongodb+srv://yulek:DPuvQGHTIu6ki95O@cluster0-ikzkx.mongodb.net/test'
+  url: 'mongodb://yulek:DPuvQGHTIu6ki95O@cluster0-shard-00-00-ikzkx.mongodb.net:27017,cluster0-shard-00-01-ikzkx.mongodb.net:27017,cluster0-shard-00-02-ikzkx.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true',
+  storage: 'mongodb',
+  instance: mongoose,
+  host: 'localhost',
+  port: 4200,
+  db: 'test',
+  collection: 'sessions',
+  expire: 86400
 });
 
 app.use(bodyParser.json());
@@ -41,14 +48,15 @@ app.use((req, res, next) => {
 
 const sessionMiddleware = session({
   store: sessionStore,
-  secret: 'secret',
-  resave: true,
-  saveUninitialized: false,
+  secret: 'a4f8071f-c873-4447-8ee2',
+ // resave:true,
+  saveUninitialized:false,
   cookie: {
-    maxAge: 10 * 60 * 1000,
-    httpOnly: false,
+    maxAge: 2628000000,
+    httpOnly: false
   }
 });
+
 
 app.use(cookieParser());
 app.use(sessionMiddleware);

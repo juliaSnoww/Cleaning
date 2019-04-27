@@ -58,7 +58,6 @@ export class AuthService {
     this.token = authInformation.token;
     this.isAuthenticated = true;
     this.authStatusListener.next(true);
-
   }
 
   logout() {
@@ -85,7 +84,3 @@ export class AuthService {
     return {token};
   }
 }
-
-
-
-

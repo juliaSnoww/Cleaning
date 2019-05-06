@@ -1,0 +1,16 @@
+<form [formGroup]="serviceTypeForm" (ngSubmit)="onSubmit()">
+  <h3>Choose your cleaning service</h3>
+  <h4>and input cost for this</h4>
+  <label formArrayName="type" *ngFor="let types of serviceTypeForm.controls.type.controls; let i = index">
+    <input type="checkbox" [formControlName]="i">
+    {{type[i].name}}
+    <input
+      type="number"
+      [readonly]="!types.value"
+      [value]="type[i].cost"
+      (input)="type[i].cost = $event.target.value">
+  </label>
+  <div *ngIf="!serviceTypeForm.valid">At least one type of cleaning must be selected</div>
+  <button>submit</button>
+</form>
+

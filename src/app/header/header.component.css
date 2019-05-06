@@ -1,11 +1,24 @@
-.navbar-default {
-  background-color: currentColor;
-}
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .5rem;
+  background-color: #222831;
+  color: #ddd; }
+  nav .logo {
+    margin-left: 2%;
+    font-size: x-large; }
+    nav .logo b {
+      letter-spacing: 2px;
+      font-weight: 900;
+      color: #00adb5; }
+  nav .nav-list {
+    display: flex; }
+    nav .nav-list li {
+      font-size: 1rem;
+      margin-right: 1rem; }
+      nav .nav-list li:hover a {
+        font-weight: 900;
+        color: #00adb5; }
 
-.right {
-  float: right;
-}
-
-a:hover {
-  color: darkred  !important;
-}
+/*# sourceMappingURL=header.component.css.map */

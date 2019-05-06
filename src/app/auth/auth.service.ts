@@ -17,10 +17,6 @@ export class AuthService {
               private router: Router) {
   }
 
-  getToken() {
-    return this.token;
-  }
-
   getIsAuth() {
     return this.isAuthenticated;
   }
@@ -31,15 +27,15 @@ export class AuthService {
 
   createUser(username: string, email: string, password: string) {
     const authData: AuthData = {username, email, password};
-    console.log(authData);
+    // console.log(authData);
     this.http.post('http://localhost:3000/api/user/signup', authData)
       .subscribe(response => {
-        console.log(response);
+       // console.log(response);
       });
   }
 
-  login(username: string, email: string, password: string) {
-    const authData: AuthData = {username, email, password};
+  login(email: string, password: string) {
+    const authData = {email, password};
     this.http.post<{ token: string }>('http://localhost:3000/api/user/login', authData)
       .subscribe(response => {
         this.isAuthenticated = true;

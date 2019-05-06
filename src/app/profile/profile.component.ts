@@ -14,7 +14,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.http.get('http://localhost:3000/api/user/login').subscribe(
       (response) => {
-        console.log(response);
       }
     );
   }

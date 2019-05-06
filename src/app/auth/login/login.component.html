@@ -1,43 +1,60 @@
-<div class="root">
-  <div>
-    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+<div class="container">
+  <div class="root">
+    <header>
+      <label for="client" [style.backgroundColor]="this.isClient? '#00ADB5' : '#393E46' ">Client</label>
+      <input
+        type="radio"
+        name="role"
+        value="client"
+        id="client"
+        hidden
+        (click)="onSelectRole(client.checked)"
+        #client>
+      <label for="company" [style.backgroundColor]="!this.isClient? '#00ADB5' :'#393E46' ">Company</label>
+      <input
+        type="radio"
+        name="role"
+        value="company"
+        id="company"
+        hidden
+        (click)="onSelectRole(client.checked)"
+        #company>
+    </header>
 
-      <div>
-        <p>Username</p>
-        <input
-          type="text"
-          formControlName="username"
-          autocomplete="on" >
-        <span
-          *ngIf="!loginForm.get('username').valid && loginForm.get('username').touched">
-          Please enter a valid username</span>
-      </div>
+    <div class="form-container">
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
 
-      <div>
-        <p>Email</p>
-        <input
-          type="text"
-          formControlName="email">
-        <span
-          *ngIf="!loginForm.get('email').valid && loginForm.get('email').touched">
-          Please enter a valid email</span>
-      </div>
+        <div>
+          <input
+            type="text"
+            formControlName="email"
+            placeholder="Email">
+          <p
+            class="error"
+            *ngIf="!loginForm.get('email').valid && loginForm.get('email').touched">
+          Please enter a valid email
+          </p>
+        </div>
 
-      <div>
-        <p>Password</p>
-        <input
-          type="password"
-          formControlName="password">
-        <span
-          *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched">
-          Please enter a valid password</span>
-      </div>
+        <div>
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Password">
+          <p
+            class="error"
+            *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched">
+          Please enter a valid password
+          </p>
+        </div>
 
-      <button
-        type="submit"
-        [disabled]="loginForm.invalid">
-        Login
-      </button>
-    </form>
+        <button
+          type="submit">
+          Login
+        </button>
+
+      </form>
+    </div>
   </div>
 </div>
+

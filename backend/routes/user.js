@@ -32,47 +32,11 @@ router.post("/signup", (req, res, next) => {
 router.post('/login',
   passport.authenticate('local'),
   (req,res) =>{
-  console.log(req.session);
   res.status(200).json({msg:'ok'})
 });
 
 router.get('/login', (req, res) => {
-  console.log(req.session)
-  console.log(req.passport)
-  console.log(req.sessionID);
-  res.status(200).json({user: req.session});
+  res.status(200).json({user: req.user});
 });
-/*  let fetchedUser;
-
-  User.find({email: req.body.email})
-    .then(user => {
-      if (!user) {
-        return res.status(401).json({
-          message: 'User doesn\'t exist'
-        })
-      }
-      fetchedUser = user[0];
-      return bcrypt.compare(req.body.password, user[0].password);
-    })
-    .then(result => {
-      if (!result) {
-        return res.status(401).json({
-          message: 'Auth failed'
-        })
-      }
-      const token = jwt.sign({
-          username: fetchedUser.username,
-          email: fetchedUser.email,
-          userId: fetchedUser._id
-        },
-        'secret'
-      );
-      res.status(200).json({token})
-    })
-    .catch(err => {
-      return res.status(401).json({
-        message: 'Auth failed'
-      })
-    })*/
 
 module.exports = router;

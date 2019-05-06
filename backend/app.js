@@ -34,7 +34,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+  res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
@@ -47,9 +48,9 @@ app.use((req, res, next) => {
 });
 
 const sessionMiddleware = session({
-  store: sessionStore,
+ // store: sessionStore,
   secret: 'a4f8071f-c873-4447-8ee2',
- // resave:true,
+  resave:true,
   saveUninitialized:false,
   cookie: {
     maxAge: 2628000000,

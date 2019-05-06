@@ -1,0 +1,39 @@
+@import "/~src/style/variables";
+
+.container {
+  height: 93vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.root {
+  min-height: 10rem;
+  width: 450px;
+  box-shadow: 1px 1px 10px $smoke;
+  background-color: $smoke;
+
+  header {
+    display: flex;
+    background-color: $gray;
+    & > a {
+      padding: .5rem;
+      color: $smoke;
+      text-align: center;
+      width: 50%;
+      &:hover {
+        font-weight: 900;
+        background-color: $turquoise;
+      }
+    }
+    & > a:first-child {
+      border-right: 1px solid $smoke;
+    }
+  }
+}
+label{
+  width: 100%;
+}
+.active{
+background-color: $turquoise;
+}

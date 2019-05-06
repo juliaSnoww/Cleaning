@@ -1,0 +1,61 @@
+<form [formGroup]="signupFormClient" (ngSubmit)="onSubmit()">
+
+  <div>
+    <input
+      type="text"
+      formControlName="username"
+      placeholder="Username">
+    <p
+      class="error"
+      *ngIf="signupFormClient.get('username').invalid && signupFormClient.get('username').touched">
+      Please enter username
+    </p>
+  </div>
+
+  <div>
+    <input
+      type="text"
+      formControlName="email"
+      placeholder="Email">
+    <p
+      class="error"
+      *ngIf="signupFormClient.get('email').invalid && signupFormClient.get('email').touched">
+      Please enter a valid email
+    </p>
+  </div>
+
+  <div>
+    <input
+      type="password"
+      formControlName="password"
+      placeholder="Password">
+    <p
+      class="error"
+      *ngIf="signupFormClient.get('password').invalid && signupFormClient.get('password').touched">
+      Please enter a valid password
+    </p>
+  </div>
+
+  <div>
+    <input
+      type="password"
+      formControlName="passConfirm"
+      placeholder="Confirm password">
+    <p
+      class="error"
+      *ngIf="signupFormClient.get('passConfirm').invalid && signupFormClient.get('passConfirm').touched">
+      Please enter the same password
+    </p>
+    <p
+      class="error"
+      *ngIf="!passMatch">
+      Password doesn't match
+    </p>
+  </div>
+
+  <button
+    type="submit">
+    Sign Up
+  </button>
+
+</form>

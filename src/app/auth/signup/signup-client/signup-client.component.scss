@@ -1,0 +1,43 @@
+@import "/~src/style/variables";
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  & > div {
+    width: 60%;
+  }
+  .error {
+    margin-bottom: .5rem;
+    padding: .2rem;
+    text-align: center;
+    font-size: .9rem;
+    background-color: rgba(150, 0, 0, 0.5);
+    color: $smoke;
+    border-radius: 20px;
+  }
+  input {
+    padding: .2rem;
+    border: none;
+    margin-bottom: .5rem;
+    width: 100%;
+    &.ng-invalid.ng-touched {
+      box-shadow: 0 0 5px darkred;
+    }
+  }
+  input:focus, button:focus {
+    outline: none;
+    box-shadow: 0 0 5px $turquoise;
+  }
+  button {
+    width: 50%;
+    border: none;
+    background-color: $button-color;
+    color: $gray;
+    padding: .5rem;
+    //border-top-left-radius: 20px;
+    //border-bottom-right-radius: 20px;
+  }
+}

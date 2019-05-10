@@ -1,41 +1,61 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {UserModel} from './user.model';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {CookieService} from 'ngx-cookie-service';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../auth/auth.service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   user: UserModel;
   profileForm: FormGroup;
+  passMatch = true;
+  private userInfoSubscription;
 
   constructor(private http: HttpClient,
-              private cookie: CookieService) {
+              private authService: AuthService,
+              private fb: FormBuilder) {
   }
 
   ngOnInit() {
-    this.http.get('http://localhost:3000/api/user/login').subscribe(
-      (response: UserModel) => {
+    this.userInfoSubscription = this.authService.getUserInfo().subscribe(
+      (response) => {
         this.user = response;
-        this.profileForm = new FormGroup({
-          username: new FormControl(this.user.username, Validators.required),
-          email: new FormControl(this.user.email, [Validators.required, Validators.email]),
-          address: new FormControl(this.user.address || '55', Validators.required)
+        this.profileForm = this.fb.group({
+          info: new FormGroup({
+            username: new FormControl(this.user.username, Validators.required),
+            email: new FormControl(this.user.email || 0, [Validators.required, Validators.email]),
+            address: new FormControl(this.user.address || '55', Validators.required)
+          }),
+          pass: this.fb.group({
+            oldPass: new FormControl(null, Validators.required),
+            newPass: new FormControl(null, Validators.required),
+            confirmPass: new FormControl(null, Validators.required)
+          })
         });
-      }
-    );
+      });
   }
 
   onSubmit() {
-    this.http.put('http://localhost:3000/api/user/login', this.profileForm.value).subscribe(
-      (response) => {
-        console.log(response);
+    const pristine = this.profileForm.controls.pass.pristine;
+    if (this.profileForm.controls.pass.valid || pristine) {
+      const pass = this.profileForm.get('pass.newPass').value;
+      const passConfirm = this.profileForm.get('pass.confirmPass').value;
+      if (pass !== passConfirm) {
+        this.passMatch = false;
+        this.authService.updateUserInfo(this.profileForm.value.info);
+      } else if (pristine) {
+        this.authService.updateUserInfo(this.profileForm.value.info);
+      } else {
+        this.authService.updateUserInfo(this.profileForm.value.info, this.profileForm.value.pass);
       }
-    );
-    console.log(this.profileForm.pristine);
+    }
+  }
+
+  ngOnDestroy() {
+    this.userInfoSubscription.unsubscribe();
   }
 }

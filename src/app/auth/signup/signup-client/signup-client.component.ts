@@ -24,10 +24,8 @@ export class SignupClientComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    let pass;
-    let passConfirm;
-    pass = this.signupFormClient.get('password').value;
-    passConfirm = this.signupFormClient.get('passConfirm').value;
+    const pass = this.signupFormClient.get('password').value;
+    const passConfirm = this.signupFormClient.get('passConfirm').value;
     if (pass !== passConfirm) {
       this.passMatch = false;
       return;

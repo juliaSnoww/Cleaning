@@ -1,12 +1,13 @@
 <div class="container">
-  <div class="container-info">
-    <img src="../../assets/13441586.jpeg" alt="prianyk">
+  <form
+    *ngIf="profileForm"
+    [formGroup]="profileForm"
+    (ngSubmit)="onSubmit()">
+    <div class="container-info">
 
-      <form
-        *ngIf="profileForm"
-        [formGroup]="profileForm"
-        class="info"
-      (ngSubmit)="onSubmit()">
+      <img src="../../assets/13441586.jpeg" alt="prianyk">
+
+      <div class="info" formGroupName="info">
 
         <div>
           <p>Name</p>
@@ -15,7 +16,7 @@
             formControlName="username">
           <p
             class="error"
-            *ngIf="!profileForm.get('username').valid && profileForm.get('username').touched">
+            *ngIf="!profileForm.get('info.username').valid && profileForm.get('info.username').touched">
             Please enter a valid name
           </p>
         </div>
@@ -27,7 +28,7 @@
             formControlName="email">
           <p
             class="error"
-            *ngIf="profileForm.get('email').invalid && profileForm.get('email').touched">
+            *ngIf="!profileForm.get('info.email').valid && profileForm.get('info.email').touched">
             Please enter a valid email
           </p>
         </div>
@@ -40,12 +41,58 @@
             formControlName="address">
           <p
             class="error"
-            *ngIf="profileForm.get('address').invalid && profileForm.get('address').touched">
+            *ngIf="!profileForm.get('info.address').valid && profileForm.get('info.address').touched">
             Please enter a address
           </p>
         </div>
-        <button [disabled]="profileForm.pristine">save</button>
-      </form>
+
+      </div>
 
     </div>
+
+    <div class="info" formGroupName="pass" >
+      <div>
+        <p>Old password</p>
+        <input
+          type="password"
+          formControlName="oldPass">
+        <p
+          class="error"
+          *ngIf="profileForm.get('pass.oldPass').invalid && profileForm.get('pass.oldPass').touched">
+          Please enter a password
+        </p>
+      </div>
+
+
+      <div>
+        <p>New password</p>
+        <input
+          type="password"
+          formControlName="newPass">
+        <p
+          class="error"
+          *ngIf="profileForm.get('pass.newPass').invalid && profileForm.get('pass.newPass').touched">
+          Please enter a new password
+        </p>
+      </div>
+
+      <div>
+        <p>Repeat new password</p>
+        <input
+          type="password"
+          formControlName="confirmPass">
+        <p
+          class="error"
+          *ngIf="profileForm.get('pass.confirmPass').invalid && profileForm.get('pass.confirmPass').touched">
+          Please enter the same password
+        </p>
+      </div>
+      <p
+        class="error"
+        *ngIf="!passMatch">
+        Password doesn't match
+      </p>
+    </div>
+    <button [disabled]="profileForm.pristine">save</button>
+  </form>
 </div>

@@ -51,16 +51,56 @@ router.get('/login', (req, res) => {
 
 });
 
-router.put('/login', (req, res) => {
+router.put('/login/pass', (req, res) => {
+  const {username, email, address} = req.body.userInfo;
+  const {oldPass, newPass} = req.body.pass;
+
+  User.findOne({_id: req.user})
+    .then(user => {
+      return bcrypt.compare(oldPass, user.password);
+    })
+    .then(result => {
+      if (!result) {
+        User.updateOne(
+          {_id: req.user},
+          {$set: {username, email, address}}
+        ).then(response => {
+          res.send({
+            message: "Old password wrong"
+          })
+        })
+      }
+      else {
+        bcrypt.hash(newPass, 10).then(hash => {
+          User.updateOne(
+            {_id: req.user},
+            {$set: {username, email, address, password: hash}},
+            (err, result) => {
+              if (err) res.status(500).json({err});
+              res.status(200).json({msg: 'ok'})
+            }
+          );
+        })
+      }
+    })
+    .catch(err => {
+      return res.status(400).json({
+        message: "Something Wrong"
+      });
+    });
+});
+
+router.put('/login/info', (req, res) => {
   const {username, email, address} = req.body;
   User.updateOne(
     {_id: req.user},
     {$set: {username, email, address}},
     (err, result) => {
-      if (err) res.status(500).json({err});
+      if (err) res.status(500).json({msg: 'something wrong with update user info'});
       res.status(200).json({msg: 'ok'})
     }
   );
+
 });
 
 module.exports = router;

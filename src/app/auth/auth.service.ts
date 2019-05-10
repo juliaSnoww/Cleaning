@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 
 import {AuthData} from './auth.model';
 import {CookieService} from 'ngx-cookie-service';
+import {UserModel} from '../profile/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class AuthService {
   private cookie: string;
   private isAuthenticated = false;
   private authStatusListener = new Subject();
+  private userInfo = new Subject();
 
   constructor(private http: HttpClient,
               private router: Router,
@@ -25,6 +27,29 @@ export class AuthService {
 
   getAuthStatus() {
     return this.authStatusListener.asObservable();
+  }
+
+  getUserInfo() {
+    this.http.get('http://localhost:3000/api/user/login').subscribe(
+      (response: UserModel) => {
+        this.userInfo.next(response);
+      });
+    return this.userInfo.asObservable();
+  }
+
+  updateUserInfo(userInfo, pass = null) {
+    if (pass) {
+      this.http.put('http://localhost:3000/api/user/login/pass', {userInfo, pass})
+        .subscribe(response => {
+          console.log(response);
+        });
+    } else {
+      this.http.put('http://localhost:3000/api/user/login/info', userInfo)
+        .subscribe(response => {
+          console.log(response);
+        });
+    }
+
   }
 
   createUser(username: string, email: string, password: string) {
@@ -44,6 +69,7 @@ export class AuthService {
         this.authStatusListener.next(true);
         this.router.navigate(['/']);
       });
+
   }
 
   autoAuthUser() {

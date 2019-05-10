@@ -1,4 +1,4 @@
-<form [formGroup]="signupFormCompany" (ngSubmit)="onSubmit()">
+<form [formGroup]="signupFormCompany" (ngSubmit)="onSubmit()" [style.display]="isFirstPart? 'flex' : 'none'">
 
   <div>
     <input
@@ -99,13 +99,13 @@
       Password doesn't match
     </p>
   </div>
-  <a routerLink="service-type">
-    <button type="button">Next</button>
-  </a>
+  <button type="button" (click)="next()">Next</button>
 
-  <button
-    type="submit">
-    Sign Up
-  </button>
+  <!--<button-->
+    <!--type="submit">-->
+    <!--Sign Up-->
+  <!--</button>-->
 
 </form>
+<app-service-types [hidden]="isFirstPart"></app-service-types>
+<button type="button" [hidden]="isFirstPart" (click)="next()" class="back">back</button>

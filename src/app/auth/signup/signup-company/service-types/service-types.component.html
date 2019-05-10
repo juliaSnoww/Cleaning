@@ -1,16 +1,63 @@
 <form [formGroup]="serviceTypeForm" (ngSubmit)="onSubmit()">
-  <h3>Choose your cleaning service</h3>
-  <h4>and input cost for this</h4>
-  <label formArrayName="type" *ngFor="let types of serviceTypeForm.controls.type.controls; let i = index">
-    <input type="checkbox" [formControlName]="i">
-    {{type[i].name}}
-    <input
-      type="number"
-      [readonly]="!types.value"
-      [value]="type[i].cost"
-      (input)="type[i].cost = $event.target.value">
-  </label>
-  <div *ngIf="!serviceTypeForm.valid">At least one type of cleaning must be selected</div>
+  <header>
+    <h3>Choose your cleaning service</h3>
+    <h4>and input cost for this</h4>
+  </header>
+  <div>
+    <div
+      class="container"
+      formArrayName="type"
+      *ngFor="let types of serviceTypeForm.controls.type.controls; let i = index">
+    <span>
+      <input type="checkbox" [formControlName]="i">
+      {{type[i].name}}
+    </span>
+      <input
+        type="number"
+        [readonly]="!types.value"
+        [value]="type[i].cost"
+        (input)="type[i].cost = $event.target.value">
+    </div>
+  </div>
+
+  <div
+    *ngIf="!serviceTypeForm.controls.type.valid"
+    class="error">
+    At least one type of cleaning must be selected
+  </div>
+
+  <h3>Cost for rooms</h3>
+
+  <div formGroupName="rooms">
+    <p>Bathroom
+      <input type="number" formControlName="bath">
+    </p>
+    <p
+      class="error"
+      *ngIf="serviceTypeForm.get('rooms.bath').invalid && serviceTypeForm.get('rooms.bath').touched">
+      Please enter Name your company
+    </p>
+
+    <p>Standard room
+      <input type="number" formControlName="standard">
+    </p>
+    <p
+      class="error"
+      *ngIf="serviceTypeForm.get('rooms.standard').invalid && serviceTypeForm.get('rooms.standard').touched">
+      Please enter Name your company
+    </p>
+
+    <p>Large room(>35m<sup>2</sup>)
+      <input type="number" formControlName="large">
+    </p>
+    <p
+      class="error"
+      *ngIf="serviceTypeForm.get('rooms.large').invalid && serviceTypeForm.get('rooms.large').touched">
+      Please enter Name your company
+    </p>
+
+  </div>
+
   <button>submit</button>
 </form>
 

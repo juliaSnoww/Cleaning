@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const passportConfig = require('./config/auth-init');
 const userRoutes = require('./routes/user');
+const companyRoutes = require('./routes/company');
 const cookieParser = require('cookie-parser');
-const MongoStore = require('connect-mongo')(session);
 
 const app = express();
 
@@ -18,17 +18,6 @@ mongoose
   .catch(() => {
     console.log('Connection failed');
   });
-
-const sessionStore = new MongoStore({
-  url: 'mongodb://yulek:DPuvQGHTIu6ki95O@cluster0-shard-00-00-ikzkx.mongodb.net:27017,cluster0-shard-00-01-ikzkx.mongodb.net:27017,cluster0-shard-00-02-ikzkx.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true',
-  storage: 'mongodb',
-  instance: mongoose,
-  host: 'localhost',
-  port: 4200,
-  db: 'test',
-  collection: 'sessions',
-  expire: 86400
-});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -48,10 +37,9 @@ app.use((req, res, next) => {
 });
 
 const sessionMiddleware = session({
- // store: sessionStore,
   secret: 'a4f8071f-c873-4447-8ee2',
-  resave:true,
-  saveUninitialized:false,
+  resave: true,
+  saveUninitialized: false,
   cookie: {
     maxAge: 2628000000,
     httpOnly: false
@@ -67,5 +55,6 @@ app.use(passport.session());
 
 
 app.use('/api/user', userRoutes);
+app.use('api/company', companyRoutes);
 
 module.exports = app;

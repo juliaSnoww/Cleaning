@@ -13,7 +13,9 @@ router.post("/signup", (req, res, next) => {
         const user = new User({
           username,
           email,
-          password: hash
+          password: hash,
+          imagePath: null,
+          address: null
         });
         user.save()
           .then(result => {
@@ -31,12 +33,34 @@ router.post("/signup", (req, res, next) => {
 
 router.post('/login',
   passport.authenticate('local'),
-  (req,res) =>{
-  res.status(200).json({msg:'ok'})
-});
+  (req, res) => {
+    res.status(200).json({msg: 'ok'})
+  });
 
 router.get('/login', (req, res) => {
-  res.status(200).json({user: req.user});
+  User.findById(req.user, (err, doc) => {
+    if (err) res.status(500).json({err});
+    const {username, email, imagePath, address} = doc;
+    res.status(200).json({
+      username,
+      email,
+      imagePath,
+      address
+    });
+  });
+
+});
+
+router.put('/login', (req, res) => {
+  const {username, email, address} = req.body;
+  User.updateOne(
+    {_id: req.user},
+    {$set: {username, email, address}},
+    (err, result) => {
+      if (err) res.status(500).json({err});
+      res.status(200).json({msg: 'ok'})
+    }
+  );
 });
 
 module.exports = router;

@@ -10,6 +10,7 @@ export class SignupCompanyComponent implements OnInit, OnDestroy {
   signupFormCompany: FormGroup;
   passMatch = true;
   logoPreview: string | ArrayBuffer;
+  isFirstPart = true;
 
   constructor() {
   }
@@ -52,6 +53,10 @@ export class SignupCompanyComponent implements OnInit, OnDestroy {
       this.logoPreview = reader.result;
     };
     reader.readAsDataURL(file);
+  }
+
+  next() {
+    this.isFirstPart = !this.isFirstPart;
   }
 
   onSubmit() {

@@ -14,8 +14,7 @@ const routes: Routes = [
   {
     path: 'signup', component: SignupComponent, children: [
       {path: 'client', component: SignupClientComponent},
-      {path: 'company', component: SignupCompanyComponent},
-      {path: 'company/service-type', component: ServiceTypesComponent}
+      {path: 'company', component: SignupCompanyComponent}
     ]
   },
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},

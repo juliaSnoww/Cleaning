@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-service-types',
@@ -24,11 +24,16 @@ export class ServiceTypesComponent implements OnInit {
 
   ngOnInit() {
     this.serviceTypeForm = this.formBuilder.group({
-      type: new FormArray([], minSelectedCheckboxes(1))
+      type: new FormArray([], minSelectedCheckboxes(1)),
+      rooms: this.formBuilder.group({
+        bath: new FormControl(null, Validators.required),
+        standard: new FormControl(null, Validators.required),
+        large: new FormControl(null, Validators.required)
+      })
     });
 
     this.addCheckboxes();
-    console.log(this.serviceTypeForm.controls.type.controls);
+    // console.log(this.serviceTypeForm.controls.type.controls);
   }
 
   private addCheckboxes() {

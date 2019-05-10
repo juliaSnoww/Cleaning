@@ -1,1 +1,51 @@
-<h1>you authenticated</h1>
+<div class="container">
+  <div class="container-info">
+    <img src="../../assets/13441586.jpeg" alt="prianyk">
+
+      <form
+        *ngIf="profileForm"
+        [formGroup]="profileForm"
+        class="info"
+      (ngSubmit)="onSubmit()">
+
+        <div>
+          <p>Name</p>
+          <input
+            type="text"
+            formControlName="username">
+          <p
+            class="error"
+            *ngIf="!profileForm.get('username').valid && profileForm.get('username').touched">
+            Please enter a valid name
+          </p>
+        </div>
+
+        <div>
+          <p>Email</p>
+          <input
+            type="text"
+            formControlName="email">
+          <p
+            class="error"
+            *ngIf="profileForm.get('email').invalid && profileForm.get('email').touched">
+            Please enter a valid email
+          </p>
+        </div>
+
+
+        <div>
+          <p>Address</p>
+          <input
+            type="text"
+            formControlName="address">
+          <p
+            class="error"
+            *ngIf="profileForm.get('address').invalid && profileForm.get('address').touched">
+            Please enter a address
+          </p>
+        </div>
+        <button [disabled]="profileForm.pristine">save</button>
+      </form>
+
+    </div>
+</div>

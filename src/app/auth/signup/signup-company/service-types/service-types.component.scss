@@ -4,30 +4,37 @@ form {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  //align-items: center;
-  padding: 1rem;
-  & > div {
-    width: 60%;
-  }
-  .error {
-    margin-bottom: .5rem;
-    padding: .2rem;
+  align-items: center;
+  padding: 1.5rem;
+  font-size: .9rem;
+  header {
     text-align: center;
-    font-size: .9rem;
-    background-color: rgba(150, 0, 0, 0.5);
-    color: $smoke;
-    border-radius: 20px;
+    margin-bottom: 1rem;
   }
-  input, textarea {
+  .container, p {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: .5rem;
+  }
+
+  input {
     padding: .2rem;
     border: none;
+    &[type="number"]{
+      width: 5rem;
+      margin-left: 2rem;
+    }
     &.ng-invalid.ng-touched {
       box-shadow: 0 0 5px darkred;
     }
   }
-  input:focus, button:focus, textarea:focus {
+  input:focus, button:focus {
     outline: none;
     box-shadow: 0 0 5px $turquoise;
+  }
+  input[readonly] {
+    box-shadow: none;
+    background-color: rgba(200, 200, 200, 0.5);
   }
   button {
     width: 50%;
@@ -37,16 +44,23 @@ form {
     padding: .5rem;
     //border-top-left-radius: 20px;
     //border-bottom-right-radius: 20px;
-    &[type='button'] {
-      margin-bottom: .5rem;
-    }
   }
-  input[type="text"] {
-    background-color: darkred;
-  }
+
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
+}
+div[formGroupName = "rooms"]{
+  margin: .5rem 0 ;
+}
+.error {
+  margin-bottom: .5rem;
+  padding: .2rem;
+  text-align: center;
+  font-size: .9rem;
+  background-color: rgba(150, 0, 0, 0.5);
+  color: $smoke;
+  border-radius: 20px;
 }

@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../auth.service';
 
 @Component({
   selector: 'app-signup-client',
@@ -10,7 +11,7 @@ export class SignupClientComponent implements OnInit, OnDestroy {
   signupFormClient: FormGroup;
   passMatch = true;
 
-  constructor() {
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -31,11 +32,11 @@ export class SignupClientComponent implements OnInit, OnDestroy {
       this.passMatch = false;
       return;
     }
-    // this.authService.createUser(
-    //   this.signupForm.get('username').value,
-    //   this.signupForm.get('email').value,
-    //   this.signupForm.get('password').value
-    // );
+    this.authService.createUser(
+      this.signupFormClient.get('username').value,
+      this.signupFormClient.get('email').value,
+      this.signupFormClient.get('password').value
+    );
   }
 
   ngOnDestroy() {

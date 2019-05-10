@@ -13,6 +13,7 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { SignupClientComponent } from './auth/signup/signup-client/signup-client.component';
 import { SignupCompanyComponent } from './auth/signup/signup-company/signup-company.component';
 import { ServiceTypesComponent } from './auth/signup/signup-company/service-types/service-types.component';
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ServiceTypesComponent } from './auth/signup/signup-company/service-type
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor ,
       multi: true
-    }
+    },
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

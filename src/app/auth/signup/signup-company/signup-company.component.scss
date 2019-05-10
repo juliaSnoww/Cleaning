@@ -31,19 +31,6 @@ form {
     outline: none;
     box-shadow: 0 0 5px $turquoise;
   }
-  button {
-    width: 50%;
-    border: none;
-    background-color: $button-color;
-    color: $gray;
-    padding: .5rem;
-    //border-top-left-radius: 20px;
-    //border-bottom-right-radius: 20px;
-    &[type='button'] {
-      margin-bottom: .5rem;
-    }
-  }
-
 }
 
 textarea {
@@ -57,3 +44,22 @@ textarea {
     height: 100%;
   }
 }
+
+button {
+  width: 50%;
+  border: none;
+  background-color: $button-color;
+  color: $gray;
+  padding: .5rem;
+  //border-top-left-radius: 20px;
+  //border-bottom-right-radius: 20px;
+  &[type='button'] {
+    margin-bottom: .5rem;
+  }
+  &.back{
+    width: 30%;
+    margin-left: 35%;
+    background-color: $button-back;
+  }
+}
+

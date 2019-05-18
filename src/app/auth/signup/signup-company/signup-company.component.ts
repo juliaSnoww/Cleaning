@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../auth.service';
 
 @Component({
   selector: 'app-signup-company',
@@ -12,7 +13,7 @@ export class SignupCompanyComponent implements OnInit, OnDestroy {
   logoPreview: string | ArrayBuffer;
   isFirstPart = true;
 
-  constructor() {
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -22,24 +23,7 @@ export class SignupCompanyComponent implements OnInit, OnDestroy {
       description: new FormControl(null, Validators.required),
       logo: new FormControl(null, Validators.required),
       address: new FormControl(null, Validators.required),
-      costPerUnit: new FormGroup({
-          rooms: new FormGroup({
-            bath: new FormControl(null, Validators.required),
-            regular: new FormControl(null, Validators.required),
-            large: new FormControl(null, Validators.required)
-          })
-          // types: new FormGroup({
-          //   standard: new FormControl(),
-          //   general: new FormControl(),
-          //   afterConstructions: new FormControl(),
-          //   carpetCleaning: new FormControl(),
-          //   officeCleaning: new FormControl(),
-          //   furnitureCleaning: new FormControl(),
-          //   industrialCleaning: new FormControl(),
-          //   poolCleaning: new FormControl()
-          // })
-        }
-      ),
+      costPerUnit: new FormGroup({}),
       password: new FormControl(null, Validators.required),
       passConfirm: new FormControl(null, Validators.required)
     });
@@ -59,21 +43,21 @@ export class SignupCompanyComponent implements OnInit, OnDestroy {
     this.isFirstPart = !this.isFirstPart;
   }
 
-  onSubmit() {
-    let pass;
-    let passConfirm;
-    pass = this.signupFormCompany.get('password').value;
-    passConfirm = this.signupFormCompany.get('passConfirm').value;
-    if (pass !== passConfirm) {
-      this.passMatch = false;
-      return;
-    }
-    // this.authService.createUser(
-    //   this.signupForm.get('username').value,
-    //   this.signupForm.get('email').value,
-    //   this.signupForm.get('password').value
-    // );
+  sendForm(serviceType) {
+    this.signupFormCompany.setControl('costPerUnit', new FormControl(serviceType));
+    this.authService.createCompany(this.signupFormCompany.value);
   }
+
+  // onSubmit() {
+  //   let pass;
+  //   let passConfirm;
+  //   pass = this.signupFormCompany.get('password').value;
+  //   passConfirm = this.signupFormCompany.get('passConfirm').value;
+  //   if (pass !== passConfirm) {
+  //     this.passMatch = false;
+  //     return;
+  //   }
+  // }
 
   ngOnDestroy() {
     this.signupFormCompany.reset();

@@ -6,17 +6,18 @@ import {ProfileComponent} from './profile/profile.component';
 import {AuthGuard} from './auth/auth.guard';
 import {SignupClientComponent} from './auth/signup/signup-client/signup-client.component';
 import {SignupCompanyComponent} from './auth/signup/signup-company/signup-company.component';
-import {ServiceTypesComponent} from './auth/signup/signup-company/service-types/service-types.component';
+import {ReservationComponent} from './reservation/reservation.component';
 
 const routes: Routes = [
+  {path: '', component: ReservationComponent},
   {path: 'login', component: LoginComponent},
-  // {path: 'signup', component: SignupComponent},
   {
     path: 'signup', component: SignupComponent, children: [
       {path: 'client', component: SignupClientComponent},
       {path: 'company', component: SignupCompanyComponent}
     ]
   },
+  {path: 'reservation', component: ReservationComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   {path: '**', redirectTo: ''}
 ];

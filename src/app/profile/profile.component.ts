@@ -22,7 +22,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userInfoSubscription = this.authService.getUserInfo().subscribe(
-      (response) => {
+      (response: UserModel) => {
         this.user = response;
         this.profileForm = this.fb.group({
           info: new FormGroup({

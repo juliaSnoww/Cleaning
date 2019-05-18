@@ -10,7 +10,7 @@
       *ngFor="let types of serviceTypeForm.controls.type.controls; let i = index">
     <span>
       <input type="checkbox" [formControlName]="i">
-      {{type[i].name}}
+      {{type[i].display}}
     </span>
       <input
         type="number"

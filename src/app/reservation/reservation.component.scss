@@ -1,0 +1,115 @@
+@import "/~src/style/variables";
+
+header {
+  font-size: 2rem;
+  font-weight: 900;
+  color: $turquoise;
+  text-align: center;
+  margin: 2rem;
+
+}
+
+.container {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #dddddd;
+  padding: 2rem;
+
+  form {
+    width: 60%;
+
+    span.header {
+      font-size: 1.1rem;
+    }
+
+    input, select {
+      box-sizing: content-box;
+      height: 1.5rem;
+      padding: .2rem;
+      border: .5px solid lightgray;
+      border-radius: 4px;
+      margin-left: 1rem;
+      margin-bottom: .5rem;
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 5px $turquoise;
+      }
+      &.ng-invalid.ng-touched {
+        box-shadow: 0 0 5px darkred;
+      }
+    }
+
+  }
+  .cleaning-type-box {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1rem;
+    width: 35rem;
+  }
+
+  .cleaning-type {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 5.5rem;
+    width: 8rem;
+    padding: .5rem;
+    margin: 5px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    img {
+      width: 2.5rem;
+    }
+    label {
+      text-align: center;
+      font-size: .9rem;
+      margin-bottom: .2rem;
+    }
+  }
+
+}
+
+.error {
+  margin-bottom: .5rem;
+  padding: .2rem;
+  text-align: center;
+  font-size: .9rem;
+  background-color: rgba(150, 0, 0, 0.5);
+  color: $smoke;
+  border-radius: 20px;
+}
+/*
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  & > div {
+    width: 60%;
+  }
+
+}
+
+button {
+  width: 50%;
+  border: none;
+  background-color: $button-color;
+  color: $gray;
+  padding: .5rem;
+  //border-top-left-radius: 20px;
+  //border-bottom-right-radius: 20px;
+  &[type='button'] {
+    margin-bottom: .5rem;
+  }
+  &.back{
+    width: 30%;
+    margin-left: 35%;
+    background-color: $button-back;
+  }
+}
+*/

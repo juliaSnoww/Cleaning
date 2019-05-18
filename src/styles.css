@@ -10,4 +10,11 @@ a {
 li {
   list-style-type: none; }
 
+@media (max-width: 720px) {
+  html {
+    font-size: 11px; } }
+@media (max-width: 480px) {
+  html {
+    font-size: 9.5px; } }
+
 /*# sourceMappingURL=styles.css.map */

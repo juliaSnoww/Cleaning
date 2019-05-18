@@ -1,16 +1,16 @@
 /*
-Error: File to import not found or unreadable: ~src/style/variables.
-        on line 1 of profile.component.scss
+Error: File to import not found or unreadable: /~src/style/variables.
+        on line 1 of reservation.component.scss
 
-1: @import "~src/style/variables";
+1: @import "/~src/style/variables";
 2: 
-3: .page {
-4:   height: 93vh;
-5:   display: flex;
-6:   justify-content: center;
+3: header {
+4:   font-size: 2rem;
+5:   font-weight: 900;
+6:   color: $turquoise;
 
 Backtrace:
-profile.component.scss:1
+reservation.component.scss:1
 D:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.2/lib/sass/tree/import_node.rb:67:in `rescue in import'
 D:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.2/lib/sass/tree/import_node.rb:44:in `import'
 D:/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.2/lib/sass/tree/import_node.rb:28:in `imported_file'
@@ -53,4 +53,4 @@ D:/Ruby25-x64/bin/scss:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: File to import not found or unreadable: ~src/style/variables.\A         on line 1 of profile.component.scss\A \A 1: @import \"~src/style/variables\";\A 2: \A 3: .page {\A 4:   height: 93vh;\A 5:   display: flex;\A 6:   justify-content: center;"; }
+  content: "Error: File to import not found or unreadable: /~src/style/variables.\A         on line 1 of reservation.component.scss\A \A 1: @import \"/~src/style/variables\";\A 2: \A 3: header {\A 4:   font-size: 2rem;\A 5:   font-weight: 900;\A 6:   color: $turquoise;"; }

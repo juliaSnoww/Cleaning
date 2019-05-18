@@ -1,0 +1,74 @@
+<div class="container">
+  <header>Order Cleaning!</header>
+  <form [formGroup]="reservationForm" (submit)="onSubmit()">
+
+    <div>
+      <span class="header">When</span>
+      <input type="date" formControlName="date">
+      <select name="cleanTime" formControlName="time">
+        <option *ngFor="let time of timeArray" [ngValue]="time">
+          {{time}}
+        </option>
+      </select>
+    </div>
+
+
+    <div>
+      <span class="header">How often </span>
+        <select name="regularity" formControlName="regularity">
+          <option *ngFor="let regularity of regularityArray" [ngValue]="regularity.value">
+            {{regularity.display}}
+          </option>
+        </select>
+    </div>
+
+    <div>
+      <span class="header">Type of cleaning</span>
+
+      <div class="cleaning-type-box">
+        <div
+          [style.backgroundColor]="radioBtn.checked? '#00ADB5' : 'whitesmoke'"
+          [style.boxShadow]="radioBtn.checked? '0 0 5px white' : '0 0 1px gray'"
+          class="cleaning-type"
+          (click)=radioBtn.click()
+          *ngFor="let cleaningType of cleaningTypeArray">
+
+          <label [for]="cleaningType.value"> {{cleaningType.display}} </label>
+
+          <img [src]="cleaningType.img">
+
+          <input
+            type="radio"
+            formControlName="cleaningType"
+            #radioBtn
+            [id]="cleaningType"
+            [value]="cleaningType.value"
+            hidden>
+        </div>
+      </div>
+
+    </div>
+
+    <div formGroupName="apartmentDescription">
+      <p>Rooms</p>
+      Large room( > 35 m2)
+      <input type="number" formControlName="countOfLargeRoom"> <br>
+      Regular room
+      <input type="number" formControlName="countOfStandardRoom"><br>
+      Bathroom
+      <input type="number" formControlName="countOfBath">
+    </div>
+
+    <div>
+      <p>Your address
+        <input type="text" formControlName="address"></p>
+    </div>
+
+    <div>
+      <p>Email
+        <input type="text" formControlName="email"></p>
+    </div>
+    <button>Show offers</button>
+  </form>
+
+</div>

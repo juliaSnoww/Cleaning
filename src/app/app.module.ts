@@ -14,6 +14,7 @@ import { SignupClientComponent } from './auth/signup/signup-client/signup-client
 import { SignupCompanyComponent } from './auth/signup/signup-company/signup-company.component';
 import { ServiceTypesComponent } from './auth/signup/signup-company/service-types/service-types.component';
 import {CookieService} from 'ngx-cookie-service';
+import { ReservationComponent } from './reservation/reservation.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {CookieService} from 'ngx-cookie-service';
     ProfileComponent,
     SignupClientComponent,
     SignupCompanyComponent,
-    ServiceTypesComponent
+    ServiceTypesComponent,
+    ReservationComponent
   ],
   imports: [
     BrowserModule,

@@ -6,6 +6,7 @@ const passport = require('passport');
 const passportConfig = require('./config/auth-init');
 const userRoutes = require('./routes/user');
 const companyRoutes = require('./routes/company');
+const serviceRoutes = require('./routes/services');
 const cookieParser = require('cookie-parser');
 
 const app = express();
@@ -55,6 +56,7 @@ app.use(passport.session());
 
 
 app.use('/api/user', userRoutes);
-app.use('api/company', companyRoutes);
+app.use('/api/company', companyRoutes);
+app.use('/api/service', serviceRoutes);
 
 module.exports = app;

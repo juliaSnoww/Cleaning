@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 
 @Component({
@@ -7,16 +7,17 @@ import {FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators}
   styleUrls: ['./service-types.component.scss']
 })
 export class ServiceTypesComponent implements OnInit {
+  @Output() serviceType = new EventEmitter();
   serviceTypeForm: FormGroup;
   type = [
-    {cost: 1, name: 'Standard'},
-    {cost: 2, name: 'General'},
-    {cost: 3, name: 'After constructions'},
-    {cost: 4, name: 'Carpet cleaning'},
-    {cost: 5, name: 'Office cleaning'},
-    {cost: 6, name: 'Furniture cleaning'},
-    {cost: 7, name: 'Industrial cleaning'},
-    {cost: 8, name: 'Pool cleaning'},
+    {cost: 1, display: 'Standard', value: 'standard'},
+    {cost: 2, display: 'General', value: 'general'},
+    {cost: 3, display: 'After constructions', value: 'afterConstruction'},
+    {cost: 4, display: 'Carpet cleaning', value: 'carpetCleaning'},
+    {cost: 5, display: 'Office cleaning', value: 'officeCleaning'},
+    {cost: 6, display: 'Furniture cleaning', value: 'furnitureCleaning'},
+    {cost: 7, display: 'Industrial cleaning', value: 'industrialCleaning'},
+    {cost: 8, display: 'Pool cleaning', value: 'poolCleaning'},
   ];
 
   constructor(private formBuilder: FormBuilder) {
@@ -33,7 +34,22 @@ export class ServiceTypesComponent implements OnInit {
     });
 
     this.addCheckboxes();
-    // console.log(this.serviceTypeForm.controls.type.controls);
+  }
+
+  onSubmit() {
+    let type = this.serviceTypeForm.value.type.map((selected, i) => {
+      return {
+        cost: this.type[i].cost,
+        value: this.type[i].value,
+        selected
+      };
+    }).filter(user => user.selected);
+    type = transformToObj(type);
+    const formValue = Object.assign({}, {
+      type,
+      rooms: this.serviceTypeForm.value.rooms
+    });
+    this.serviceType.emit(formValue);
   }
 
   private addCheckboxes() {
@@ -41,19 +57,6 @@ export class ServiceTypesComponent implements OnInit {
       const control = new FormControl(i === 0);
       (this.serviceTypeForm.controls.type as FormArray).push(control);
     });
-  }
-
-  onSubmit() {
-    const formValue = Object.assign({}, {
-      type: this.serviceTypeForm.value.type.map((selected, i) => {
-        return {
-          name: this.type[i].name,
-          cost: this.type[i].cost,
-          selected
-        };
-      }).filter(user => user.selected)
-    });
-    console.log(formValue);
   }
 
 }
@@ -66,4 +69,12 @@ function minSelectedCheckboxes(min = 1) {
     return totalSelected >= min ? null : {required: true};
   };
   return validator;
+}
+
+function transformToObj(array) {
+  let obj = {};
+  array.forEach((el) => {
+    obj[el.value] = el.cost;
+  });
+  return obj;
 }

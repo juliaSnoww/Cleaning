@@ -38,6 +38,7 @@ router.post('/login',
   });
 
 router.get('/login', (req, res) => {
+  console.log(req.session)
   User.findById(req.user, (err, doc) => {
     if (err) res.status(500).json({err});
     const {username, email, imagePath, address} = doc;
@@ -47,6 +48,8 @@ router.get('/login', (req, res) => {
       imagePath,
       address
     });
+  }).catch( err => {
+    console.log(err)
   });
 
 });

@@ -107,5 +107,5 @@
   <!--</button>-->
 
 </form>
-<app-service-types [hidden]="isFirstPart"></app-service-types>
+<app-service-types [hidden]="isFirstPart" (serviceType)="sendForm($event)"></app-service-types>
 <button type="button" [hidden]="isFirstPart" (click)="next()" class="back">back</button>

@@ -60,8 +60,24 @@ export class AuthService {
       });
   }
 
-  login(email: string, password: string) {
-    const authData = {email, password};
+  createCompany(form) {
+    this.http.post('http://localhost:3000/api/company/signup', form)
+      .subscribe(res => {
+        console.log(res);
+      });
+  }
+
+  loginCompany(authData) {
+    this.http.post<{ token: string }>('http://localhost:3000/api/company/login', authData)
+      .subscribe(response => {
+        // this.isAuthenticated = true;
+        this.cookie = this.cookieService.get('connect.sid');
+       // this.authStatusListener.next(true);
+        this.router.navigate(['/']);
+      });
+  }
+
+  login(authData) {
     this.http.post<{ token: string }>('http://localhost:3000/api/user/login', authData)
       .subscribe(response => {
         this.isAuthenticated = true;

@@ -22,10 +22,11 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
-    this.authService.login(
-      this.loginForm.get('email').value,
-      this.loginForm.get('password').value
-    );
+    if (this.isClient) {
+      this.authService.login(this.loginForm.value);
+    } else {
+      this.authService.loginCompany(this.loginForm.value);
+    }
   }
 
   onSelectRole(item) {

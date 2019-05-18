@@ -7,15 +7,18 @@ const router = express.Router();
 const User = require('../models/user');
 
 router.post("/signup", (req, res, next) => {
-    const {username, email, password} = req.body;
+    const {name, email, password} = req.body;
+    console.log(req.body)
     bcrypt.hash(password, 10)
       .then(hash => {
         const user = new User({
-          username,
+          name,
           email,
           password: hash,
-          imagePath: null,
-          address: null
+          customer:{
+            imagePath: null,
+            address: null
+          }
         });
         user.save()
           .then(result => {
@@ -38,7 +41,6 @@ router.post('/login',
   });
 
 router.get('/login', (req, res) => {
-  console.log(req.session)
   User.findById(req.user, (err, doc) => {
     if (err) res.status(500).json({err});
     const {username, email, imagePath, address} = doc;

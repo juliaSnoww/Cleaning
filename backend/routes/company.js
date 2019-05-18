@@ -4,7 +4,7 @@ const passport = require('passport');
 
 const router = express.Router();
 
-const Company = require('../models/company');
+const User = require('../models/user');
 
 router.post("/signup", (req, res, next) => {
     const {
@@ -18,14 +18,16 @@ router.post("/signup", (req, res, next) => {
     } = req.body;
     bcrypt.hash(password, 10)
       .then(hash => {
-        const company = new Company({
+        const company = new User({
           name,
           email,
-          description,
           password: hash,
-          logo,
-          address,
-          costPerUnit
+          company: {
+            description,
+            logo,
+            address,
+            costPerUnit
+          }
         });
         company.save()
           .then(result => {
@@ -46,9 +48,5 @@ router.post('/login',
   (req, res) => {
     res.status(200).json({msg: 'ok'})
   });
-
-router.get('/login', (req, res) => {
-  res.status(200).json({user: req.user});
-});
 
 module.exports = router;

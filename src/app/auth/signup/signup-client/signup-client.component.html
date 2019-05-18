@@ -3,11 +3,11 @@
   <div>
     <input
       type="text"
-      formControlName="username"
+      formControlName="name"
       placeholder="Username">
     <p
       class="error"
-      *ngIf="signupFormClient.get('username').invalid && signupFormClient.get('username').touched">
+      *ngIf="signupFormClient.get('name').invalid && signupFormClient.get('name').touched">
       Please enter username
     </p>
   </div>

@@ -16,7 +16,7 @@ export class SignupClientComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.signupFormClient = new FormGroup({
-      username: new FormControl('jul', Validators.required),
+      name: new FormControl('jul', Validators.required),
       email: new FormControl('test@mail.ru', [Validators.required, Validators.email]),
       password: new FormControl('123', Validators.required),
       passConfirm: new FormControl('123', Validators.required)
@@ -30,11 +30,7 @@ export class SignupClientComponent implements OnInit, OnDestroy {
       this.passMatch = false;
       return;
     }
-    this.authService.createUser(
-      this.signupFormClient.get('username').value,
-      this.signupFormClient.get('email').value,
-      this.signupFormClient.get('password').value
-    );
+    this.authService.createUser(this.signupFormClient.value);
   }
 
   ngOnDestroy() {

@@ -2,27 +2,56 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = mongoose.Schema({
-  username: {type: String, required: true,unique: false},
+  name: {type: String, required: true},
   email: {type: String, required: true, unique: true},
   password: {type: String, required: true},
-  imagePath: String,
-  address: String,
-  notification: Boolean,
-  reservationInfo: {
+  customer: {
+    imagePath: String,
     address: String,
-    cleaningType: String,
-    apartmentDescription: {
-      countOfBath: Number,
-      countOfStandardRoom: Number,
-      countOfLargeRoom: Number
+    notification: Boolean,
+    reservationInfo: {
+      address: String,
+      cleaningType: String,
+      apartmentDescription: {
+        countOfBath: Number,
+        countOfStandardRoom: Number,
+        countOfLargeRoom: Number
+      },
+      preferredTime: Date,
+      regularity: String,
+      activityInfo: {
+        status: String,
+        reason: String
+      }
+    }
+  },
+  company: {
+    logo:  String,
+    address: String,
+    costPerUnit: {
+      rooms: {
+        bath: Number,
+        standard:  Number,
+        large: Number
+      },
+      type: {
+        standard: Number,
+        general: Number,
+        carpetCleaning: Number,
+        afterConstruction: Number,
+        officeCleaning: Number,
+        furnitureCleaning: Number,
+        industrialCleaning: Number,
+        poolCleaning: Number
+      }
     },
-    preferredTime: Date,
-    regularity: String,
-    activityInfo: {
+    rate: Number,
+    activeStatus: {
       status: String,
       reason: String
     }
   }
+
 });
 
 userSchema.plugin(uniqueValidator);

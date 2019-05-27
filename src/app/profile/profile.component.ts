@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {UserModel} from './user.model';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from '../auth/auth.service';
+import {AuthService} from '../shared/service/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -21,12 +21,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userInfoSubscription = this.authService.getUserInfo().subscribe(
+    this.userInfoSubscription = this.authService.getJustUserInfo().subscribe(
       (response: UserModel) => {
         this.user = response;
         this.profileForm = this.fb.group({
           info: new FormGroup({
-            username: new FormControl(this.user.username, Validators.required),
+            name: new FormControl(this.user.name, Validators.required),
             email: new FormControl(this.user.email || 0, [Validators.required, Validators.email]),
             address: new FormControl(this.user.address || '55', Validators.required)
           }),

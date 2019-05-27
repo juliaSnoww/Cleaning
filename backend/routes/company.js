@@ -7,6 +7,7 @@ const router = express.Router();
 const User = require('../models/user');
 
 router.post("/signup", (req, res, next) => {
+    const rate = 0;
     const {
       name,
       email,
@@ -14,11 +15,12 @@ router.post("/signup", (req, res, next) => {
       logo,
       address,
       password,
-      costPerUnit
+      costPerUnit,
     } = req.body;
     bcrypt.hash(password, 10)
       .then(hash => {
         const company = new User({
+          type:'company',
           name,
           email,
           password: hash,
@@ -26,7 +28,8 @@ router.post("/signup", (req, res, next) => {
             description,
             logo,
             address,
-            costPerUnit
+            costPerUnit,
+            rate
           }
         });
         company.save()
@@ -48,5 +51,14 @@ router.post('/login',
   (req, res) => {
     res.status(200).json({msg: 'ok'})
   });
+
+router.get('/get-all-company', (req, res) => {
+  User.find({type:'company'}).exec(function (err, company) {
+    if (err) throw err;
+
+    res.status(200).json({company})
+  });
+
+});
 
 module.exports = router;

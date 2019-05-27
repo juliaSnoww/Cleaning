@@ -1,5 +1,5 @@
 export interface UserModel {
-  username: string;
+  name: string;
   email: string;
   imagePath: string;
   address: string;

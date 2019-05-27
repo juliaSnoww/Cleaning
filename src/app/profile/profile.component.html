@@ -14,10 +14,10 @@
             <p>Name</p>
             <input
               type="text"
-              formControlName="username">
+              formControlName="name">
             <p
               class="error"
-              *ngIf="!profileForm.get('info.username').valid && profileForm.get('info.username').touched">
+              *ngIf="!profileForm.get('info.name').valid && profileForm.get('info.name').touched">
               Please enter a valid name
             </p>
           </div>

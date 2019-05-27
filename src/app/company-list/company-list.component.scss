@@ -1,0 +1,35 @@
+@import "/~src/style/variables";
+.container {
+  display: flex;
+  justify-content: center;
+  .company-container {
+    width: 50%;
+    min-width: 40rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    margin: 1rem;
+    background-color: $smoke;
+    .company-info {
+      display: flex;
+      .company-text-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+      }
+    }
+    img {
+      width: 5rem;
+      height: 5rem;
+      margin-right: 1rem;
+    }
+    button {
+      height: 30%;
+      border: none;
+      background-color: $button-color;
+      color: $gray;
+      padding: .5rem;
+    }
+  }
+}

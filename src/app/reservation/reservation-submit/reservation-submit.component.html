@@ -1,0 +1,57 @@
+<div class="container">
+  <p class="cross-container">
+    <img src="../../../assets/cross1.png" class="cross" [routerLink]="['/reservation']">
+  </p>
+  <header>Submit your order! </header>
+  <form [formGroup]="formSubmitted" (submit)="onSubmit()">
+    <div>
+      <span class="header">When</span>
+      <input type="date" formControlName="date" readonly>
+      <input type="text" formControlName="time" readonly>
+    </div>
+
+    <div>
+      <span class="header">How often </span>
+      <input type="text" formControlName="regularity" readonly>
+    </div>
+
+    <div>
+      <span class="header">Type of cleaning</span>
+      <input type="text" formControlName="cleaningType" readonly>
+
+    </div>
+
+    <div formGroupName="apartmentDescription">
+      <p>Rooms</p>
+      <div class="room-container">
+      Large room( > 35 m2)
+      <input type="number" formControlName="countOfLargeRoom" readonly>
+      Regular room
+      <input type="number" formControlName="countOfStandardRoom" readonly>
+      Bathroom
+      <input type="number" formControlName="countOfBath" readonly>
+      </div>
+    </div>
+
+    <div>
+      <p>Your address</p>
+        <input type="text" formControlName="address" readonly>
+    </div>
+
+    <div formGroupName="userInfo">
+      <p>Email</p>
+        <input type="text" formControlName="email" readonly>
+    </div>
+
+    <div *ngIf="isCompanySelected" formGroupName="cleaningServiceInfo">
+      <p> Implementer</p>
+        <input type="text" readonly formControlName="name">
+    </div>
+
+    <button>
+      Submit
+    </button>
+
+  </form>
+
+</div>

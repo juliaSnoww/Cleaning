@@ -1,31 +1,43 @@
 const express = require('express');
-const passport = require('passport');
 
 const router = express.Router();
 
 const Service = require('../models/services');
+const User = require('../models/user');
 
 router.post("/book", (req, res, next) => {
-    console.log(req.body);
     const {
       date: cleaningDate,
       time: preferredTime,
       address,
       apartmentDescription,
       regularity,
-      email,
+      userInfo,
       cleaningType,
-      cost
+      cleaningServiceInfo,
+      cost,
+      statusInfo
     } = req.body;
+    if (req.user){
+      userInfo.user_id = req.user;
+      User.updateOne(
+        {_id: req.user},
+        {$set: {userInfo}}
+      ).then(response => {
+        res.status(200).json({response})
+      });
+    }
     const service = new Service({
-      email,
+      userInfo,
       cleaningType,
       apartmentDescription,
       cleaningDate,
       preferredTime,
       regularity,
       address,
-      cost
+      cleaningServiceInfo,
+      cost,
+      statusInfo
     });
     service.save()
       .then(result => {

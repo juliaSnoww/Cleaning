@@ -5,19 +5,26 @@ header {
   font-weight: 900;
   color: $turquoise;
   text-align: center;
-  margin: 1rem;
+  margin-bottom: 2rem;
 }
 
 .container {
+  width: 40rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #dddddd;
-  padding: 1rem 2rem;
+  padding: 2rem;
 
   form {
     width: 60%;
-
+    & > div, .room-container {
+      display: flex;
+      justify-content: space-between;
+    }
+    .room-container{
+      flex-direction: column;
+    }
     span.header {
       font-size: 1.1rem;
     }
@@ -32,7 +39,7 @@ header {
       margin-bottom: .5rem;
       &:focus {
         outline: none;
-        box-shadow: 0 0 5px $turquoise;
+        box-shadow: 0 0 5px $black;
       }
       &.ng-invalid.ng-touched {
         box-shadow: 0 0 5px darkred;
@@ -77,6 +84,14 @@ header {
   }
 
 }
+.cross-container{
+  width: 100%;
+  .cross{
+    float: right;
+    width: 1rem;
+  }
+}
+
 
 .error {
   margin-bottom: .5rem;

@@ -1,6 +1,6 @@
 <div class="container">
   <header>Order Cleaning!</header>
-  <form [formGroup]="reservationForm" (submit)="onSubmit()">
+  <form [formGroup]="reservationForm" (submit)="saveForm()">
 
     <div>
       <span class="header">When</span>
@@ -15,11 +15,11 @@
 
     <div>
       <span class="header">How often </span>
-        <select name="regularity" formControlName="regularity">
-          <option *ngFor="let regularity of regularityArray" [ngValue]="regularity.value">
-            {{regularity.display}}
-          </option>
-        </select>
+      <select name="regularity" formControlName="regularity">
+        <option *ngFor="let regularity of regularityArray" [ngValue]="regularity.value">
+          {{regularity.display}}
+        </option>
+      </select>
     </div>
 
     <div>
@@ -64,11 +64,36 @@
         <input type="text" formControlName="address"></p>
     </div>
 
-    <div>
+    <div *ngIf="!isAuth" formGroupName="userInfo">
       <p>Email
         <input type="text" formControlName="email"></p>
     </div>
-    <button>Show offers</button>
+
+    <div *ngIf="isCompanySelected">
+      <p> Implementer
+        <input type="text" readonly [value]="companySelected.name">
+      </p>
+    </div>
+
+    <button
+      type="button"
+      *ngIf="isCompanySelected"
+      (click)="onSubmit()"
+      [routerLink]="['/reservation',{ outlets: { submit: ['submit'] } }]">
+      Reserve
+    </button>
+
+    <button *ngIf="!isCompanySelected">Show offers</button>
+    <br>
+
+    <button
+      *ngIf="!isCompanySelected"
+      type="button"
+      style="background-color: #80c851; margin-top: 1rem"
+      routerLink="/company-list">
+      Show company
+    </button>
   </form>
 
 </div>
+<router-outlet name="submit"></router-outlet>

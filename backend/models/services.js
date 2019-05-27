@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const serviceSchema = mongoose.Schema({
+  address: String,
   userInfo: {
-    username: String,
-  //  user_id: ObjectId,
+    email: String,
+    user_id: {type: Schema.Types.ObjectId, ref: 'User'},
     contactInfo: String
   },
-  email: String,
-  address:String,
   cleaningServiceInfo: {
     name: String,
-    //cleaningService_id: ObjectId
+    cleaningService_id: {type: Schema.Types.ObjectId, ref: 'User'}
   },
   cleaningType: String,
   apartmentDescription: {

@@ -12,7 +12,8 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 mongoose
-  .connect('mongodb://yulek:DPuvQGHTIu6ki95O@cluster0-shard-00-00-ikzkx.mongodb.net:27017,cluster0-shard-00-01-ikzkx.mongodb.net:27017,cluster0-shard-00-02-ikzkx.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true', {useNewUrlParser: true})
+  .connect('mongodb://localhost:27017/MyDb')
+  //.connect('mongodb://yulek:DPuvQGHTIu6ki95O@cluster0-shard-00-00-ikzkx.mongodb.net:27017,cluster0-shard-00-01-ikzkx.mongodb.net:27017,cluster0-shard-00-02-ikzkx.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true', {useNewUrlParser: true})
   .then(() => {
     console.log('Connected to DataBase');
   })

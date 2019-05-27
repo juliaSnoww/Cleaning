@@ -1,0 +1,27 @@
+<input type="text" [(ngModel)]=name (change)="searchByName()" placeholder="name">
+
+<select name="regularity" [(ngModel)]="type" (ngModelChange)="searchByType($event)">
+  <option *ngFor="let type of cleaningTypeArray" [ngValue]="type.value">
+    {{type.display}}
+  </option>
+</select>
+
+<button (click)="searchByName()">search by name</button>
+
+<div *ngIf="companies">
+
+  <div class="container" *ngFor="let company of companies">
+    <div class="company-container">
+      <div class="company-info">
+        <img src="../../assets/13441586.jpeg">
+        <div class="company-text-info">
+          <h3>{{company.name}} {{company.company.rate}}</h3>
+          <p>{{company.company.address}}</p>
+        </div>
+      </div>
+      <button (click)="order(company)">order</button>
+    </div>
+  </div>
+
+</div>
+

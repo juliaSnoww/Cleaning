@@ -29,4 +29,7 @@ export class CompanyService {
     return this.selectedCompany;
   }
 
+  onUnselectedCompany() {
+    this.isCompanySelected = false;
+  }
 }

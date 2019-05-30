@@ -19,6 +19,7 @@ import {ReservationComponent} from './reservation/reservation.component';
 import {CompanyListComponent} from './company-list/company-list.component';
 import {CompanyItemComponent} from './company-list/company-item/company-item.component';
 import {ReservationSubmitComponent} from './reservation/reservation-submit/reservation-submit.component';
+import { ReservationHistoryComponent } from './profile/reservation-history/reservation-history.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {ReservationSubmitComponent} from './reservation/reservation-submit/reser
     ReservationComponent,
     CompanyListComponent,
     CompanyItemComponent,
-    ReservationSubmitComponent
+    ReservationSubmitComponent,
+    ReservationHistoryComponent
   ],
   imports: [
     BrowserModule,

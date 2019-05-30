@@ -1,7 +1,7 @@
 @import "~src/style/variables";
 
 .page {
-  height: 93vh;
+  min-height: 93vh;
   display: flex;
   justify-content: center;
   .container {
@@ -60,10 +60,15 @@ input:focus, button:focus {
 
 button {
   width: 50%;
+  margin: .5rem 0;
   border: none;
   background-color: $button-color;
   color: $gray;
   padding: .5rem;
+
+  &.button-of-orders{
+    background-color: #00adb5;
+  }
 }
 
 @media (max-width: 480px) {

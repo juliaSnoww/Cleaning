@@ -19,14 +19,23 @@ export class ReserveService {
     return this.form;
   }
 
+  getAllOrders() {
+    return this.http.get('http://localhost:3000/api/service/orders');
+  }
+
   saveForm(form) {
     this.form = form;
   }
 
+  deleteForm() {
+    this.form = null;
+  }
+
   postReservationForm(form) {
-    this.http.post('http://localhost:3000/api/service/book', form).subscribe(
-      (response) => {
-        console.log(response);
-      });
+    console.log(form);
+    // this.http.post('http://localhost:3000/api/service/book', form).subscribe(
+    //   (response) => {
+    //     console.log(response);
+    //   });
   }
 }

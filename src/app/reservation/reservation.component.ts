@@ -3,8 +3,8 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {ReserveService} from '../shared/service/reserve.service';
 import {CompanyService} from '../shared/service/company.service';
-import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../shared/service/auth.service';
+import {ReservationModel} from '../shared/model/reservation.model';
 
 @Component({
   selector: 'app-reservation',
@@ -16,6 +16,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
   isAuth: boolean;
   isCompanySelected: boolean;
   companySelected;
+  userInfoSubscription;
   timeArray = [
     '09:00', '09:30',
     '10:00', '10:30',
@@ -51,15 +52,11 @@ export class ReservationComponent implements OnInit, OnDestroy {
               private http: HttpClient,
               private authService: AuthService,
               private reserveService: ReserveService,
-              private companyService: CompanyService,
-              private route: Router,
-              private activatedRoute: ActivatedRoute) {
+              private companyService: CompanyService) {
   }
 
   ngOnInit() {
-    this.isAuth = this.authService.getIsAuth();
-    if (this.isAuth) this.authService.getUserInfo();
-    const form = this.reserveService.getReservationForm();
+
     this.isCompanySelected = this.companyService.getCompanySelectedStatus();
     if (this.isCompanySelected) this.companyWasSelected();
 
@@ -69,9 +66,9 @@ export class ReservationComponent implements OnInit, OnDestroy {
       regularity: new FormControl(this.regularityArray[1].value, Validators.required),
       cleaningType: new FormControl(null, Validators.required),
       apartmentDescription: new FormGroup({
-        countOfBath: new FormControl(1, Validators.required),
-        countOfStandardRoom: new FormControl(2, Validators.required),
-        countOfLargeRoom: new FormControl(1, Validators.required),
+        countOfBath: new FormControl(null, Validators.required),
+        countOfStandardRoom: new FormControl(null, Validators.required),
+        countOfLargeRoom: new FormControl(null, Validators.required),
       }),
       cleaningServiceInfo: {
         name: new FormControl(this.companySelected || null, Validators.required)
@@ -82,8 +79,24 @@ export class ReservationComponent implements OnInit, OnDestroy {
         userId: new FormControl(null)
       })
     });
-    if (form) this.reservationForm.setValue(form);
 
+    const form = this.reserveService.getReservationForm();
+    this.isAuth = this.authService.getIsAuth();
+    if (this.isAuth) {
+      this.userInfoSubscription = this.authService.getUserInfo()
+        .subscribe((res: ReservationModel) => {
+          const tempForm = res.reservationInfo;
+          this.reservationForm
+            .patchValue({
+              apartmentDescription: tempForm.apartmentDescription,
+              cleaningType: tempForm.cleaningType,
+              regularity: tempForm.regularity,
+              address: tempForm.address,
+            });
+          this.saveForm();
+        });
+    }
+    if (form) this.reservationForm.patchValue(form);
   }
 
   saveForm() {
@@ -105,13 +118,11 @@ export class ReservationComponent implements OnInit, OnDestroy {
     this.companySelected = this.companyService.getSelectedCompany();
     const typeThisCompany = this.companySelected.company.costPerUnit.type;
     this.cleaningTypeArray = this.cleaningTypeArray
-      .filter((el) => {
-          return (el.value in typeThisCompany);
-        }
-      );
+      .filter((el) => el.value in typeThisCompany);
   }
 
   ngOnDestroy() {
+ //   if (this.isAuth) this.userInfoSubscription.unsubscribe();
     if (this.isCompanySelected)
       this.companyService.selectCompany(null);
   }

@@ -1,20 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 
 import {ReserveService} from '../../shared/service/reserve.service';
 import {AuthService} from '../../shared/service/auth.service';
-import {UserModel} from '../../profile/user.model';
+import {UserModel} from '../../shared/model/user.model';
 import {CompanyService} from '../../shared/service/company.service';
-import {Subject} from 'rxjs';
+import {ReservationModel} from '../../shared/model/reservation.model';
 
 @Component({
   selector: 'app-reservation-submit',
-  exportAs: 'modal',
   templateUrl: './reservation-submit.component.html',
   styleUrls: ['./reservation-submit.component.scss']
 })
-export class ReservationSubmitComponent implements OnInit, OnDestroy {
+export class ReservationSubmitComponent implements OnInit {
   formSubmitted: FormGroup;
   isAuth: boolean;
   user: UserModel;
@@ -52,23 +51,24 @@ export class ReservationSubmitComponent implements OnInit, OnDestroy {
         userId: new FormControl()
       })
     });
-    if (form) this.formSubmitted.setValue(form);
+    if (form) this.formSubmitted.patchValue(form);
     if (this.isAuth) {
-      this.user = this.authService.getUserInfo();
-      this.formSubmitted.controls
-        .userInfo
-        .patchValue({
-          email: this.user.email,
+      console.log('ggg')
+      this.authService.getUserInfo()
+        .subscribe((res: ReservationModel) => {
+          console.log(res);
+          this.user = res.userInfo;
+          this.formSubmitted.controls
+            .userInfo
+            .patchValue({
+              email: this.user.email
+            });
         });
     }
   }
 
   onSubmit() {
     this.reserveService.postReservationForm(this.formSubmitted.value);
-  }
-
-  ngOnDestroy() {
-
   }
 
 }

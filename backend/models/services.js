@@ -18,7 +18,7 @@ const serviceSchema = mongoose.Schema({
     countOfStandardRoom: Number,
     countOfLargeRoom: Number
   },
-  cleaningDate: String,
+  cleaningDate: Date,
   preferredTime: String,
   regularity: String,
   cost: Number,

@@ -96,5 +96,11 @@
       </div>
       <button [disabled]="profileForm.pristine">save</button>
     </form>
+    <button class="button-of-orders">Show my orders &#9660;</button>
+    <div *ngIf="allOrders">
+      <div *ngFor="let order of allOrders">
+        <app-reservation-history [item] = order></app-reservation-history>
+      </div>
+    </div>
   </div>
 </div>

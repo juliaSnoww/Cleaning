@@ -4,7 +4,9 @@ import {Subject} from 'rxjs';
 import {Router} from '@angular/router';
 
 import {CookieService} from 'ngx-cookie-service';
-import {UserModel} from '../../profile/user.model';
+import {UserModel} from '../model/user.model';
+import {ReserveService} from './reserve.service';
+import {CompanyService} from './company.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +15,13 @@ export class AuthService {
   private cookie: string;
   private isAuthenticated = false;
   private authStatusListener = new Subject();
-  private userInfo;
+  private customerInfo = new Subject();
 
   constructor(private http: HttpClient,
               private router: Router,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+              private reserveService: ReserveService,
+              private companyService: CompanyService) {
   }
 
   getIsAuth() {
@@ -29,11 +33,7 @@ export class AuthService {
   }
 
   getUserInfo() {
-    this.http.get('http://localhost:3000/api/user/profile').subscribe(
-      (response: UserModel) => {
-        this.userInfo = response;
-      });
-    return this.userInfo;
+    return this.customerInfo.asObservable();
   }
 
   getJustUserInfo() {
@@ -44,13 +44,21 @@ export class AuthService {
     if (pass) {
       this.http.put('http://localhost:3000/api/user/login/pass', {userInfo, pass})
         .subscribe(response => {
+          console.log(response);
         });
     } else {
       this.http.put('http://localhost:3000/api/user/login/info', userInfo)
         .subscribe(response => {
+          console.log(response);
         });
     }
+  }
 
+  getUserInfoQuery() {
+    this.http.get('http://localhost:3000/api/user/profile').subscribe(
+      (response: UserModel) => {
+        this.customerInfo.next(response);
+      });
   }
 
   createUser(authData) {
@@ -84,8 +92,8 @@ export class AuthService {
         this.cookie = this.cookieService.get('connect.sid');
         this.authStatusListener.next(true);
         this.router.navigate(['/']);
+     //   this.reserveService.getReservationForm();
       });
-
   }
 
   autoAuthUser() {
@@ -101,6 +109,8 @@ export class AuthService {
   logout() {
     this.cookieService.deleteAll();
     this.isAuthenticated = false;
+    this.reserveService.deleteForm();
+    this.companyService.onUnselectedCompany();
     this.authStatusListener.next(false);
     this.clearAuthData();
     this.router.navigate(['/']);
@@ -117,4 +127,5 @@ export class AuthService {
     }
     return {cookie};
   }
+
 }

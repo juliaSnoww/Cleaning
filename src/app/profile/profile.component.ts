@@ -1,8 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {UserModel} from './user.model';
+import {UserModel} from '../shared/model/user.model';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../shared/service/auth.service';
+import {ReservationModel} from '../shared/model/reservation.model';
+import {ReserveService} from '../shared/service/reserve.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,17 +15,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
   user: UserModel;
   profileForm: FormGroup;
   passMatch = true;
+  allOrders;
   private userInfoSubscription;
 
   constructor(private http: HttpClient,
               private authService: AuthService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private reserveService: ReserveService) {
   }
 
   ngOnInit() {
     this.userInfoSubscription = this.authService.getJustUserInfo().subscribe(
-      (response: UserModel) => {
-        this.user = response;
+      (response: ReservationModel) => {
+        this.user = response.userInfo;
         this.profileForm = this.fb.group({
           info: new FormGroup({
             name: new FormControl(this.user.name, Validators.required),
@@ -37,6 +41,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
           })
         });
       });
+    this.reserveService.getAllOrders()
+      .subscribe(res => this.allOrders = res);
   }
 
   onSubmit() {

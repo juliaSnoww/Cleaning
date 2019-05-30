@@ -1,0 +1,57 @@
+@import "/~src/style/variables";
+
+header {
+  font-size: 2rem;
+  font-weight: 900;
+  color: $turquoise;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.container {
+  width: 40rem;
+  display: flex;
+  margin: 1rem 0;
+  flex-direction: column;
+  align-items: center;
+  background-color: #dddddd;
+  padding: 2rem;
+
+  form {
+    width: 60%;
+    & > div, .room-container {
+      display: flex;
+      justify-content: space-between;
+    }
+    .room-container {
+      flex-direction: column;
+    }
+    span.header {
+      font-size: 1.1rem;
+    }
+    input {
+      box-sizing: content-box;
+      height: 1.5rem;
+      padding: .2rem;
+      border: .5px solid lightgray;
+      border-radius: 4px;
+      margin-left: 1rem;
+      margin-bottom: .5rem;
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 5px $black;
+      }
+    }
+    .date-cleaning input {
+      width: 6rem;
+    }
+  }
+
+  button {
+    width: 50%;
+    border: none;
+    background-color: $button-color;
+    color: $gray;
+    padding: .5rem;
+  }
+}

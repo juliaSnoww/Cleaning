@@ -18,7 +18,8 @@ const userSchema = mongoose.Schema({
         countOfStandardRoom: Number,
         countOfLargeRoom: Number
       },
-      preferredTime: Date,
+      cleaningDate: Date,
+      preferredTime: String,
       regularity: String,
       activityInfo: {
         status: String,

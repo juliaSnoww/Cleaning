@@ -4,11 +4,19 @@ const passport = require('passport');
 
 const router = express.Router();
 
+const checkAuth = require('../middleware/check-auth');
 const User = require('../models/user');
 
-router.post("/signup", (req, res, next) => {
+router.post('/signup', (req, res, next) => {
   const notification = false;
   const {name, email, password} = req.body;
+  User.find({email: email}, (err, doc) => {
+    if (doc.length !== 0) {
+      return res.status(400).json({
+        message: 'User with this email already exist'
+      })
+    }
+  });
   bcrypt.hash(password, 10)
     .then(hash => {
       const user = new User({
@@ -36,6 +44,10 @@ router.post("/signup", (req, res, next) => {
               reason: null
             }
           }
+        },
+        activeStatus: {
+          status: true,
+          reason: ''
         }
       });
       user.save()
@@ -51,55 +63,60 @@ router.post("/signup", (req, res, next) => {
     })
 });
 
-router.post('/login',
-  passport.authenticate('local'),
-  (req, res) => {
-    res.status(200).json({msg: 'ok'})
-  });
+router.post('/login', function (req, res, next) {
+  passport.authenticate('local', function (err, user, info) {
+    if (!err && user) {
+      req.login(user, (loginErr) => {
+        if (loginErr) {
+          return next(loginErr)
+        }
+        res.status(200).json({msg: 'ok', type: user.type})
+      })
+    } else {
+      res.send({msg: err || 'unauthorised'})
+    }
+  })(req, res, next)
+});
 
-router.get('/profile', (req, res) => {
-  User.findById(req.user, (err, doc) => {
-    if (err) return res.status(500).json({err});
-    if (!doc) return res.status(400).json({msg: 'not found'});
-    const {name, email, customer: {imagePath, address}} = doc;
-    const reservationInfo = doc.customer.reservationInfo;
-    res.status(200).json({
-      userInfo: {
-        name,
-        email,
-        imagePath,
-        address
-      },
-      reservationInfo
-    })
-  }).catch(err => {
+router.get('/profile', checkAuth, (req, res) => {
+  User.findById(
+    req.user,
+    {name: 1, email: 1, customer: 1},
+    (err, doc) => {
+      if (err) return res.status(500).json({err});
+      if (!doc) return res.status(400).json({msg: 'not found'});
+      const {name, email, customer: {imagePath, address}} = doc;
+      const reservationInfo = doc.customer.reservationInfo;
+      res.status(200).json({
+        userInfo: {
+          name,
+          email,
+          imagePath,
+          address
+        },
+        reservationInfo
+      })
+    }
+  ).catch(err => {
     res.send({err})
   });
 });
 
-router.put('/login/pass', (req, res) => {
-  const {name, email, address} = req.body.userInfo;
-  const {oldPass, newPass} = req.body.pass;
+router.put('/login/pass', checkAuth, (req, res) => {
+  const {oldPsw, newPsw} = req.body;
   User.findOne({_id: req.user})
     .then(user => {
-      return bcrypt.compare(oldPass, user.password);
+      return bcrypt.compare(oldPsw, user.password);
     })
     .then(result => {
       if (!result) {
-        User.updateOne(
-          {_id: req.user},
-          {$set: {name, email, 'customer.address': address}}
-        ).then(response => {
-          res.send({
-            message: "Old password wrong"
-          })
-        })
+        res.send({msg: "Old password wrong"})
       }
       else {
-        bcrypt.hash(newPass, 10).then(hash => {
+        bcrypt.hash(newPsw, 10).then(hash => {
           User.updateOne(
             {_id: req.user},
-            {$set: {name, email, 'customer.address': address, password: hash}},
+            {$set: {password: hash}},
             (err, result) => {
               if (err) res.status(500).json({err});
               res.status(200).json({msg: 'ok'})
@@ -115,7 +132,7 @@ router.put('/login/pass', (req, res) => {
     });
 });
 
-router.put('/login/info', (req, res) => {
+router.put('/login/info', checkAuth, (req, res) => {
   const {name, email, address} = req.body;
   User.update(
     {_id: req.user},
@@ -125,7 +142,6 @@ router.put('/login/info', (req, res) => {
       res.status(200).json({msg: 'ok'})
     }
   );
-
 });
 
 module.exports = router;

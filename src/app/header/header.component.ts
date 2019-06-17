@@ -8,26 +8,36 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  userAuth;
+  private userAuth;
+  private isCompany = false;
+  private isAdmin = false;
+  private clientTypeSubscription: Subscription;
   private authListenerSubs: Subscription;
 
   constructor(private authService: AuthService) {
+    this.authListenerSubs = this.authService
+      .getAuthStatus()
+      .subscribe(isAuth => this.userAuth = isAuth);
+    this.clientTypeSubscription = this.authService
+      .getClientTypeStatus()
+      .subscribe(
+        value => this.isCompany = !value,
+        err => console.log(err));
+    this.authService.getIsAdminListener().subscribe((response: boolean) => {
+      this.isAdmin = response;
+    });
+  }
+
+  ngOnInit() {
+    this.userAuth = this.authService.getIsAuth();
   }
 
   onLogout() {
     this.authService.logout();
   }
 
-  ngOnInit() {
-    this.userAuth = this.authService.getIsAuth();
-    this.authListenerSubs = this.authService
-      .getAuthStatus()
-      .subscribe(isAuth => {
-        this.userAuth = isAuth;
-      });
-  }
-
   ngOnDestroy() {
+    this.clientTypeSubscription.unsubscribe();
     this.authListenerSubs.unsubscribe();
   }
 

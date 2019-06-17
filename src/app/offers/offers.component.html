@@ -1,0 +1,25 @@
+<div class="page" *ngIf="companyArray">
+  <div class="container">
+
+    <div class="company-container" *ngFor="let item of companyArray">
+
+      <div class="company-info">
+
+        <img src="../../assets/13441586.jpeg">
+
+        <div class="company-text-info">
+          <h3><a (click)="showCompany(item)">{{item.name}}</a> {{item.company.rate}}</h3>
+          <p>{{item.company.address}}</p>
+        </div>
+
+      </div>
+      <div class="price-container">
+        <p class="price">{{item.price}}</p>
+        <button (click)="order(item)">order</button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<router-outlet name="modal"></router-outlet>

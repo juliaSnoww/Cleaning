@@ -55,12 +55,4 @@ input::-webkit-inner-spin-button {
 div[formGroupName = "rooms"]{
   margin: .5rem 0 ;
 }
-.error {
-  margin-bottom: .5rem;
-  padding: .2rem;
-  text-align: center;
-  font-size: .9rem;
-  background-color: rgba(150, 0, 0, 0.5);
-  color: $smoke;
-  border-radius: 20px;
-}
+

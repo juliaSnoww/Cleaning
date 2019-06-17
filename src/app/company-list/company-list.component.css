@@ -3,11 +3,11 @@ Error: File to import not found or unreadable: /~src/style/variables.
         on line 1 of company-list.component.scss
 
 1: @import "/~src/style/variables";
-2: .container {
-3:   display: flex;
-4:   justify-content: center;
-5:   .company-container {
-6:     width: 50%;
+2: 
+3: .page {
+4:   min-height: 93vh;
+5:   display: flex;
+6:   justify-content: center;
 
 Backtrace:
 company-list.component.scss:1
@@ -53,4 +53,4 @@ D:/Ruby25-x64/bin/scss:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: File to import not found or unreadable: /~src/style/variables.\A         on line 1 of company-list.component.scss\A \A 1: @import \"/~src/style/variables\";\A 2: .container {\A 3:   display: flex;\A 4:   justify-content: center;\A 5:   .company-container {\A 6:     width: 50%;"; }
+  content: "Error: File to import not found or unreadable: /~src/style/variables.\A         on line 1 of company-list.component.scss\A \A 1: @import \"/~src/style/variables\";\A 2: \A 3: .page {\A 4:   min-height: 93vh;\A 5:   display: flex;\A 6:   justify-content: center;"; }

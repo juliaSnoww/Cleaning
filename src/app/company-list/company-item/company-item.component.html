@@ -1,3 +1,64 @@
-<p>
-  company-item works!
-</p>
+<div class="page" (click)="returnBack($event, container)" >
+  <div class="back-to-list" routerLink="/company-list"><---</div>
+  <div class="container"  #container>
+
+    <form *ngIf="company" >
+      <div class="container-info">
+
+        <img src="../../../assets/13441586.jpeg" alt="prianyk">
+
+        <div class="info">
+          <h2 style="letter-spacing: 2px">{{companyName}} ✡{{company.rate}}</h2>
+          <h3>{{company.address}}</h3>
+        </div>
+      </div>
+
+      <div class="description">{{company.description}}</div>
+
+      <div class="cleaning-type-container">
+        <div class="cleaning-type-box">
+          <div
+            class="cleaning-type"
+            *ngFor="let cleaningType of cleaningTypeArray">
+
+            <label> {{cleaningType.display}} - {{company.costPerUnit.type[cleaningType.value]}} </label>
+
+            <img [src]="cleaningType.img">
+
+          </div>
+        </div>
+      </div>
+
+      <div class="room">
+        <div>
+          <input type="text" value="Standard room" readonly><input type="text" [value]="roomsCost.standard" readonly>
+        </div>
+        <div>
+          <input type="text" value="Large room" readonly><input type="text" [value]="roomsCost.large" readonly>
+        </div>
+        <div>
+          <input type="text" value="Bathroom" readonly><input type="text" [value]="roomsCost.bath" readonly>
+        </div>
+      </div>
+      <div class="button-container">
+        <button class="button-of-orders" (click)="order()">Make Order</button>
+      </div>
+    </form>
+    <div class="comments-container" *ngFor="let comment of commentsArray">
+      <app-comments [comment]=comment></app-comments>
+    </div>
+
+    <div class="add-comment" [formGroup]="commentForm" *ngIf="isAuth">
+      <textarea formControlName="text"></textarea>
+      <div>
+        <i class="fas fa-star icon"></i>
+        <input type="number" formControlName="rate" maxlength="1" min="1" max="5">
+        <button (click)="sendComment()">send</button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!--add check-auth for comments-->

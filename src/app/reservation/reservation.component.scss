@@ -5,18 +5,26 @@ header {
   font-weight: 900;
   color: $turquoise;
   text-align: center;
-  margin: 1rem;
+  margin: .5rem;
+}
+
+.page {
+  display: flex;
+  min-height: 93vh;
+  justify-content: center;
 }
 
 .container {
+  width: 60%;
+  min-width: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #dddddd;
-  padding: 1rem 2rem;
+  padding: .5rem 2rem;
+  box-shadow: 0 0 7px gray;
 
   form {
-    width: 60%;
 
     span.header {
       font-size: 1.1rem;
@@ -75,15 +83,22 @@ header {
       margin-bottom: .2rem;
     }
   }
-
 }
 
-.error {
-  margin-bottom: .5rem;
-  padding: .2rem;
-  text-align: center;
-  font-size: .9rem;
-  background-color: rgba(150, 0, 0, 0.5);
-  color: $smoke;
-  border-radius: 20px;
+@media (max-width: 800px) {
+  .page {
+    .container {
+      width: 100%;
+      min-width: 500px;
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  .page {
+    .container {
+      //width: 100%;
+      min-width: 300px;
+    }
+  }
 }

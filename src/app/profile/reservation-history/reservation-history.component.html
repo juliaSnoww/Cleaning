@@ -1,44 +1,59 @@
-<div class="container">
-  <form [formGroup]="formOfOrder">
-    <div class="date-cleaning">
-      <span class="header">When</span>
-      <input type="text" formControlName="cleaningDate" readonly>
-      <input type="text" formControlName="preferredTime" readonly>
+<div class="modal-container" (click)="closeModalWindow($event, container)">
+
+  <div
+    class="container"
+    [style.color]="activeInfo? '#3FB52A' : '#B51313'"
+    #container>
+    <div class="status-info"
+         [style.color]="activeInfo? '#3FB52A' : '#B51313'">
+      <h2>{{activeInfo? 'active': 'inactive'}}</h2>
     </div>
-
-    <div>
-      <span class="header">How often </span>
-      <input type="text" formControlName="regularity" readonly>
-    </div>
-
-    <div>
-      <span class="header">Type of cleaning</span>
-      <input type="text" formControlName="cleaningType" readonly>
-
-    </div>
-
-    <div formGroupName="apartmentDescription">
-      <p>Rooms</p>
-      <div class="room-container">
-        Large room( > 35 m2)
-        <input type="number" formControlName="countOfLargeRoom" readonly>
-        Regular room
-        <input type="number" formControlName="countOfStandardRoom" readonly>
-        Bathroom
-        <input type="number" formControlName="countOfBath" readonly>
+    <form [formGroup]="formOfOrder">
+      <div class="date-cleaning">
+        <span class="header">When</span>
+        <input type="text" formControlName="cleaningDate" readonly>
+        <input type="text" formControlName="preferredTime" readonly>
       </div>
-    </div>
 
-    <div>
-      <p>Your address</p>
-      <input type="text" formControlName="address" readonly>
-    </div>
+      <div>
+        <span class="header">How often </span>
+        <input type="text" formControlName="regularity" readonly>
+      </div>
 
-    <div formGroupName="cleaningServiceInfo">
-      <p> Implementer</p>
-      <input type="text" readonly formControlName="name">
-    </div>
+      <div>
+        <span class="header">Type of cleaning</span>
+        <input type="text" formControlName="cleaningType" readonly>
 
-  </form>
+      </div>
 
+      <div formGroupName="apartmentDescription">
+        <p>Rooms</p>
+        <div class="room-container">
+          <p>Large room( > 35 m2)</p>
+          <input type="number" formControlName="countOfLargeRoom" readonly>
+          <p>Regular room</p>
+          <input type="number" formControlName="countOfStandardRoom" readonly>
+          <p>Bathroom</p>
+          <input type="number" formControlName="countOfBath" readonly>
+        </div>
+      </div>
+
+      <div>
+        <p>Your address</p>
+        <input type="text" formControlName="address" readonly>
+      </div>
+
+      <div formGroupName="cleaningServiceInfo">
+        <p> Implementer</p>
+        <input type="text" readonly formControlName="name">
+      </div>
+
+      <div formGroupName="statusInfo" *ngIf="statusInfo === 'canceled'">
+        <p> Reason for cancel</p>
+        <input type="text" readonly formControlName="text">
+      </div>
+
+      <h3 style="text-align: center;color: #222831">{{price}}</h3>
+    </form>
+  </div>
 </div>

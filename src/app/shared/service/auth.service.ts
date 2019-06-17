@@ -4,7 +4,6 @@ import {Subject} from 'rxjs';
 import {Router} from '@angular/router';
 
 import {CookieService} from 'ngx-cookie-service';
-import {UserModel} from '../model/user.model';
 import {ReserveService} from './reserve.service';
 import {CompanyService} from './company.service';
 
@@ -15,7 +14,11 @@ export class AuthService {
   private cookie: string;
   private isAuthenticated = false;
   private authStatusListener = new Subject();
-  private customerInfo = new Subject();
+  private clientTypeListener = new Subject();
+  private isClient: boolean;
+  private isAdminStatus = new Subject();
+  private isAdmin;
+  private msgBlocked = new Subject();
 
   constructor(private http: HttpClient,
               private router: Router,
@@ -28,72 +31,114 @@ export class AuthService {
     return this.isAuthenticated;
   }
 
+  getIsAdminListener() {
+    return this.isAdminStatus.asObservable();
+  }
+
+  getIsAdmin() {
+    return this.isAdmin;
+  }
+
   getAuthStatus() {
     return this.authStatusListener.asObservable();
   }
 
-  getUserInfo() {
-    return this.customerInfo.asObservable();
+  getClientTypeStatus() {
+    return this.clientTypeListener.asObservable();
+  }
+
+  isClientType() {
+    return this.isClient;
   }
 
   getJustUserInfo() {
     return this.http.get('http://localhost:3000/api/user/profile');
   }
 
-  updateUserInfo(userInfo, pass = null) {
-    if (pass) {
-      this.http.put('http://localhost:3000/api/user/login/pass', {userInfo, pass})
-        .subscribe(response => {
-          console.log(response);
-        });
-    } else {
-      this.http.put('http://localhost:3000/api/user/login/info', userInfo)
-        .subscribe(response => {
-          console.log(response);
-        });
-    }
+  getCompanyInfo() {
+    return this.http.get('http://localhost:3000/api/company/profile');
   }
 
-  getUserInfoQuery() {
-    this.http.get('http://localhost:3000/api/user/profile').subscribe(
-      (response: UserModel) => {
-        this.customerInfo.next(response);
+  updateUserInfo(userInfo) {
+    this.http.put('http://localhost:3000/api/user/login/info', userInfo)
+      .subscribe(response => {
+        console.log(response);
       });
+  }
+
+  updateCompanyInfo(companyInfo) {
+    console.log(companyInfo);
+    this.http.put('http://localhost:3000/api/company/login/info', companyInfo)
+      .subscribe(response => {
+        console.log(response);
+      });
+  }
+
+  updatePsw(oldPsw, newPsw) {
+    return this.http.put('http://localhost:3000/api/user/login/pass', {oldPsw, newPsw});
   }
 
   createUser(authData) {
-    this.http.post('http://localhost:3000/api/user/signup', authData)
-      .subscribe(response => {
-        this.router.navigate(['/']);
-      });
+    return this.http.post('http://localhost:3000/api/user/signup', authData);
   }
 
   createCompany(form) {
     this.http.post('http://localhost:3000/api/company/signup', form)
       .subscribe(res => {
+        console.log(res);
         this.router.navigate(['/']);
       });
   }
 
   loginCompany(authData) {
-    this.http.post<{ token: string }>('http://localhost:3000/api/company/login', authData)
-      .subscribe(response => {
-        this.isAuthenticated = true;
-        this.cookie = this.cookieService.get('connect.sid');
-        this.authStatusListener.next(true);
-        this.router.navigate(['/']);
+    this.http.post('http://localhost:3000/api/user/login', authData)
+      .subscribe((response: { msg: string, type: string }) => {
+        if (response.msg === 'ok') {
+          this.isClient = false;
+          this.isAuthenticated = true;
+          this.cookie = this.cookieService.get('connect.sid');
+          this.cookieService.set('type', 'company');
+          this.authStatusListener.next(true);
+          this.clientTypeListener.next(false);
+          this.router.navigate(['/active-order-list']);
+        }
+        else {
+          this.msgBlocked.next(response.msg);
+        }
       });
   }
 
   login(authData) {
-    this.http.post<{ token: string }>('http://localhost:3000/api/user/login', authData)
-      .subscribe(response => {
-        this.isAuthenticated = true;
-        this.cookie = this.cookieService.get('connect.sid');
-        this.authStatusListener.next(true);
-        this.router.navigate(['/']);
-     //   this.reserveService.getReservationForm();
+    this.http.post('http://localhost:3000/api/user/login', authData)
+      .subscribe((response: { msg: string, type: string }) => {
+        console.log(response);
+        if (response.msg === 'ok') {
+          if (response.type === 'admin') {
+            this.isAdminStatus.next(true);
+            this.isAdmin = true;
+            this.cookieService.deleteAll();
+            this.isAuthenticated = true;
+            this.authStatusListener.next(true);
+            this.router.navigate(['admin/customer']);
+          } else {
+            this.isClient = true;
+            this.isAuthenticated = true;
+            this.cookie = this.cookieService.get('connect.sid');
+            this.cookieService.set('type', 'client');
+            this.authStatusListener.next(true);
+            this.clientTypeListener.next(true);
+            this.router.navigate(['/']);
+          }
+        }
+        else {
+          console.log(response.msg);
+          this.msgBlocked.next(response.msg);
+        }
       });
+  }
+
+  getMsgError() {
+    return this.msgBlocked.asObservable();
   }
 
   autoAuthUser() {
@@ -102,6 +147,8 @@ export class AuthService {
       return;
     }
     this.cookie = this.cookieService.get('connect.sid');
+    this.isClient = (this.cookieService.get('type') === 'client');
+    this.clientTypeListener.next(this.isClient);
     this.isAuthenticated = true;
     this.authStatusListener.next(true);
   }
@@ -109,11 +156,15 @@ export class AuthService {
   logout() {
     this.cookieService.deleteAll();
     this.isAuthenticated = false;
+    this.isClient = false;
+    this.isAdmin = false;
+    this.isAdminStatus.next(false);
     this.reserveService.deleteForm();
     this.companyService.onUnselectedCompany();
     this.authStatusListener.next(false);
+    this.clientTypeListener.next(true);
     this.clearAuthData();
-    this.router.navigate(['/']);
+    this.router.navigate(['/main']);
   }
 
   private clearAuthData() {

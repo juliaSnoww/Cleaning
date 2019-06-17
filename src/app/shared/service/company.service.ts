@@ -17,7 +17,7 @@ export class CompanyService {
   }
 
   selectCompany(company) {
-    this.isCompanySelected = !this.isCompanySelected;
+    this.isCompanySelected = true;
     this.selectedCompany = company;
   }
 
@@ -29,7 +29,21 @@ export class CompanyService {
     return this.selectedCompany;
   }
 
+  getProfileCompany(name) {
+    return this.http.get('http://localhost:3000/api/company/get-company?name=' + name);
+  }
+
+  postComment(data) {
+    this.http.post('http://localhost:3000/api/comments/add-comment', data)
+      .subscribe(res => console.log(res));
+  }
+
+  getComments(companyId) {
+    return this.http.get('http://localhost:3000/api/comments/comments?companyId=' + companyId);
+  }
+
   onUnselectedCompany() {
     this.isCompanySelected = false;
+    this.selectedCompany = null;
   }
 }

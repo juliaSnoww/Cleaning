@@ -1,0 +1,181 @@
+@import "~src/style/variables";
+
+.page {
+  min-height: 93vh;
+  display: flex;
+  justify-content: center;
+  .container {
+    width: 60%;
+    min-width: 700px;
+    box-shadow: 1px 1px 10px $smoke;
+    background-color: whitesmoke;
+    padding: 2rem;
+    p {
+      font-size: .85rem;
+    }
+    .container-info {
+      display: flex;
+      background-color: #00adb5;
+      img {
+        height: 10rem;
+        width: 10rem;
+        margin-right: 1rem;
+      }
+      .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        padding: 1rem;
+      }
+    }
+    .description {
+      padding: 2rem;
+      margin-top: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 5px $smoke;
+    }
+    .cleaning-type-container {
+      display: flex;
+      justify-content: center;
+      .cleaning-type-box {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        margin: 1rem;
+        max-width: 35rem;
+        .cleaning-type {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          height: 5.5rem;
+          width: 8rem;
+          padding: .5rem;
+          margin: 5px;
+          box-shadow: 0 0 3px $turquoise;
+          box-sizing: border-box;
+          border-radius: 5px;
+          img {
+            width: 2.5rem;
+          }
+          label {
+            text-align: center;
+            font-size: .9rem;
+            margin-bottom: .2rem;
+          }
+        }
+      }
+    }
+    .room {
+      display: flex;
+      justify-content: center;
+      & > div {
+        margin: 1.2rem;
+
+        input {
+          width: 9rem;
+          font-size: 1.1rem;
+          & + input {
+            width: 2rem;
+            background-color: $turquoise;
+            color: white;
+          }
+        }
+      }
+    }
+    .comments-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      & app-comments {
+        width: inherit;
+      }
+    }
+    .add-comment {
+      //max-width: 40rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .star-container {
+        display: flex;
+        label {
+          padding: .5rem;
+        }
+      }
+    }
+  }
+
+}
+
+textarea {
+  width: 20rem;
+  height: 5rem;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input {
+  padding: .2rem;
+  border: none;
+  margin: .5rem 0;
+  &[type='number'] {
+    width: 2rem;
+    padding: .5rem;
+  }
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  width: 50%;
+  margin: .5rem 0;
+  border: none;
+  background-color: $button-color;
+  color: $gray;
+  padding: .5rem;
+
+  &.button-of-orders {
+    background-color: #00adb5;
+    color: white;
+    border-radius: 3px;
+    box-shadow: 0 0 5px $gray;
+  }
+}
+
+.back-to-list {
+  position: absolute;
+  left: 5px;
+  margin-top: 1rem;
+  width: 3rem;
+  background-color: #393e46;
+  color: #dddddd;
+  cursor: pointer;
+}
+
+@media (max-width: 750px) {
+  .page {
+    .container {
+      width: 100%;
+      min-width: 500px;
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  .page {
+    .container {
+      //width: 100%;
+      min-width: 300px;
+    }
+  }
+}
+

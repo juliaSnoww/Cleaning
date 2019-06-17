@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = mongoose.Schema({
-  type:{type:String, required:true},
+  type: {type: String, required: true},
   name: {type: String, required: true},
   email: {type: String, required: true, unique: true},
   password: {type: String, required: true},
@@ -28,12 +28,13 @@ const userSchema = mongoose.Schema({
     }
   },
   company: {
-    logo:  String,
+    logo: String,
     address: String,
+    description: String,
     costPerUnit: {
       rooms: {
         bath: Number,
-        standard:  Number,
+        standard: Number,
         large: Number
       },
       type: {
@@ -48,10 +49,10 @@ const userSchema = mongoose.Schema({
       }
     },
     rate: Number,
-    activeStatus: {
-      status: String,
-      reason: String
-    }
+  },
+  activeStatus: {
+    status: Boolean,
+    reason: String
   }
 
 });

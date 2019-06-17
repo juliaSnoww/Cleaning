@@ -15,9 +15,9 @@ module.exports = function () {
             if (!user) {
               return done(ERR, false, {message: 'That email is not registered'});
             }
-
             bcrypt.compare(password, user.password, (err, isMatch) => {
               if (err) return done(ERR, false);
+              if (!user.activeStatus.status) return done('You are blocked',false);
               if (isMatch) return done(null, user);
               return done(ERR, false, {message: 'Password incorrect'});
             });
@@ -32,4 +32,5 @@ module.exports = function () {
   passport.deserializeUser(function (id, done) {
     done(null, id);
   });
-};
+}
+;

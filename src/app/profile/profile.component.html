@@ -50,8 +50,11 @@
         </div>
 
       </div>
+      <button [disabled]="profileForm.pristine">save</button>
+      <br>
+      <button (click)="changePsw()" type="button">Change password</button>
+      <div class="password-container" formGroupName="pass" *ngIf="isChangePsw">
 
-      <div class="info" formGroupName="pass">
         <div>
           <p>Old password</p>
           <input
@@ -63,7 +66,6 @@
             Please enter a password
           </p>
         </div>
-
 
         <div>
           <p>New password</p>
@@ -93,14 +95,25 @@
           *ngIf="!passMatch">
           Password doesn't match
         </p>
+        <p
+          class="error"
+          *ngIf="msgError">
+          Old password wrong
+        </p>
+        <button (click)="savePsw()" type="button">Save new password</button>
       </div>
-      <button [disabled]="profileForm.pristine">save</button>
+
     </form>
-    <button class="button-of-orders">Show my orders &#9660;</button>
-    <div *ngIf="allOrders">
-      <div *ngFor="let order of allOrders">
-        <app-reservation-history [item] = order></app-reservation-history>
+
+    <button class="button-of-orders" (click)="showAllOrders()" >Show my orders &#9660;</button>
+    <div *ngIf="isShowOrder">
+      <div
+        *ngFor="let order of allOrders"
+        class="my-orders"
+        [routerLink]="['/profile/',{ outlets: { modal: ['order', order._id] } }]">
+        <app-mini-reserve-history [item]=order></app-mini-reserve-history>
       </div>
     </div>
   </div>
 </div>
+<router-outlet name="modal"></router-outlet>

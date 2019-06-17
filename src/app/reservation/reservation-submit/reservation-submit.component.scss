@@ -8,97 +8,97 @@ header {
   margin-bottom: 2rem;
 }
 
-.container {
-  width: 40rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #dddddd;
-  padding: 2rem;
-
-  form {
-    width: 60%;
-    & > div, .room-container {
-      display: flex;
-      justify-content: space-between;
-    }
-    .room-container{
-      flex-direction: column;
-    }
-    span.header {
-      font-size: 1.1rem;
-    }
-
-    input, select {
-      box-sizing: content-box;
-      height: 1.5rem;
-      padding: .2rem;
-      border: .5px solid lightgray;
-      border-radius: 4px;
-      margin-left: 1rem;
-      margin-bottom: .5rem;
-      &:focus {
-        outline: none;
-        box-shadow: 0 0 5px $black;
-      }
-      &.ng-invalid.ng-touched {
-        box-shadow: 0 0 5px darkred;
-      }
-    }
-    button {
-      width: 50%;
-      border: none;
-      background-color: $button-color;
-      color: $gray;
-      padding: .5rem;
-      //border-top-left-radius: 20px;
-      //border-bottom-right-radius: 20px;
-    }
-  }
-  .cleaning-type-box {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 1rem;
-    width: 35rem;
-  }
-
-  .cleaning-type {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    height: 5.5rem;
-    width: 8rem;
-    padding: .5rem;
-    margin: 5px;
-    box-sizing: border-box;
-    border-radius: 5px;
-    img {
-      width: 2.5rem;
-    }
-    label {
-      text-align: center;
-      font-size: .9rem;
-      margin-bottom: .2rem;
-    }
-  }
-
-}
-.cross-container{
+.modal-container {
+  position: fixed;
+  top: 0;
   width: 100%;
-  .cross{
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .container {
+    width: 40rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #dddddd;
+    padding: 2rem;
+
+    form {
+      width: 60%;
+      & > div, .room-container {
+        display: flex;
+        justify-content: space-between;
+      }
+      .room-container {
+        flex-direction: column;
+      }
+      span.header {
+        font-size: 1.1rem;
+      }
+
+      input, select {
+        box-sizing: content-box;
+        height: 1.5rem;
+        padding: .2rem;
+        border: .5px solid lightgray;
+        border-radius: 4px;
+        margin-left: 1rem;
+        margin-bottom: .5rem;
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 5px $black;
+        }
+        &.ng-invalid.ng-touched {
+          box-shadow: 0 0 5px darkred;
+        }
+      }
+      button {
+        width: 50%;
+        border: none;
+        background-color: $button-color;
+        color: $gray;
+        padding: .5rem;
+        //border-top-left-radius: 20px;
+        //border-bottom-right-radius: 20px;
+      }
+    }
+    .cleaning-type-box {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 1rem;
+      width: 35rem;
+    }
+
+    .cleaning-type {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      height: 5.5rem;
+      width: 8rem;
+      padding: .5rem;
+      margin: 5px;
+      box-sizing: border-box;
+      border-radius: 5px;
+      img {
+        width: 2.5rem;
+      }
+      label {
+        text-align: center;
+        font-size: .9rem;
+        margin-bottom: .2rem;
+      }
+    }
+
+  }
+}
+
+.cross-container {
+  width: 100%;
+  .cross {
     float: right;
     width: 1rem;
   }
-}
-
-
-.error {
-  margin-bottom: .5rem;
-  padding: .2rem;
-  text-align: center;
-  font-size: .9rem;
-  background-color: rgba(150, 0, 0, 0.5);
-  color: $smoke;
-  border-radius: 20px;
 }

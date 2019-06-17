@@ -1,16 +1,29 @@
-import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
+import {TestBed, async, inject} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {CookieModule} from 'ngx-cookie';
+import {CookieService} from 'ngx-cookie-service';
+
+import {AppComponent} from './app.component';
+import {HeaderComponent} from './header/header.component';
+import {AuthService} from './shared/service/auth.service';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        HttpClientTestingModule,
+        //  CookieModule.forRoot()
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        HeaderComponent
       ],
+      providers: [
+        AuthService,
+        CookieService,
+      ]
     }).compileComponents();
   }));
 
@@ -20,16 +33,21 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'CleaningService'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('CleaningService');
-  });
-
-  it('should render title in a h1 tag', () => {
+  it('should render header', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to CleaningService!');
+    expect(compiled.querySelector('app-header').textContent).toContain('');
   });
+
+  it('should call autoAuthUser on AuthService', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    const authService = fixture.debugElement.injector.get(AuthService);
+    spyOn(authService, 'autoAuthUser')
+      .and.returnValue(Promise.resolve('Data'));
+    fixture.detectChanges();
+    expect(app.data).toBe(undefined);
+  });
+
 });

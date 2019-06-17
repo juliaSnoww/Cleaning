@@ -1,6 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterContentChecked, AfterContentInit, AfterViewChecked, Component, DoCheck, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
+
 import {ReserveService} from '../shared/service/reserve.service';
 import {CompanyService} from '../shared/service/company.service';
 import {AuthService} from '../shared/service/auth.service';
@@ -13,9 +15,11 @@ import {ReservationModel} from '../shared/model/reservation.model';
 })
 export class ReservationComponent implements OnInit, OnDestroy {
   reservationForm: FormGroup;
+  emptyField = false;
   isAuth: boolean;
   isCompanySelected: boolean;
   companySelected;
+  companySelectedName: string;
   userInfoSubscription;
   timeArray = [
     '09:00', '09:30',
@@ -52,14 +56,11 @@ export class ReservationComponent implements OnInit, OnDestroy {
               private http: HttpClient,
               private authService: AuthService,
               private reserveService: ReserveService,
-              private companyService: CompanyService) {
+              private companyService: CompanyService,
+              private router: Router) {
   }
 
   ngOnInit() {
-
-    this.isCompanySelected = this.companyService.getCompanySelectedStatus();
-    if (this.isCompanySelected) this.companyWasSelected();
-
     this.reservationForm = this.fb.group({
       date: new FormControl(null, Validators.required),
       time: new FormControl(this.timeArray[2], Validators.required),
@@ -71,7 +72,8 @@ export class ReservationComponent implements OnInit, OnDestroy {
         countOfLargeRoom: new FormControl(null, Validators.required),
       }),
       cleaningServiceInfo: {
-        name: new FormControl(this.companySelected || null, Validators.required)
+        name: new FormControl(null, Validators.required),
+        cleaningService_id: new FormControl(null)
       },
       address: new FormControl(null, Validators.required),
       userInfo: new FormGroup({
@@ -81,9 +83,11 @@ export class ReservationComponent implements OnInit, OnDestroy {
     });
 
     const form = this.reserveService.getReservationForm();
+    if (form) this.reservationForm.patchValue(form);
+
     this.isAuth = this.authService.getIsAuth();
     if (this.isAuth) {
-      this.userInfoSubscription = this.authService.getUserInfo()
+      this.userInfoSubscription = this.authService.getJustUserInfo()
         .subscribe((res: ReservationModel) => {
           const tempForm = res.reservationInfo;
           this.reservationForm
@@ -91,39 +95,91 @@ export class ReservationComponent implements OnInit, OnDestroy {
               apartmentDescription: tempForm.apartmentDescription,
               cleaningType: tempForm.cleaningType,
               regularity: tempForm.regularity,
-              address: tempForm.address,
+              address: tempForm.address
             });
+          this.reservationForm.controls.userInfo
+            .patchValue({email: res.userInfo.email});
           this.saveForm();
         });
     }
-    if (form) this.reservationForm.patchValue(form);
+
+    this.isCompanySelected = this.companyService.getCompanySelectedStatus();
+    if (this.isCompanySelected) this.companyWasSelected();
   }
 
   saveForm() {
     this.reserveService.saveForm(this.reservationForm.value);
   }
 
-  onSubmit() {
-    this.reservationForm.controls
-      .cleaningServiceInfo
-      .patchValue({
-        name: this.companySelected.name,
-        cleaningService_id: this.companySelected._id
-      });
-    this.reserveService.saveForm(this.reservationForm.value);
-  }
-
-
   private companyWasSelected() {
     this.companySelected = this.companyService.getSelectedCompany();
-    const typeThisCompany = this.companySelected.company.costPerUnit.type;
+    let typeThisCompany;
+
+    if (this.companySelected.company) {
+      typeThisCompany = this.companySelected.company.costPerUnit.type;
+      this.companySelectedName = this.companySelected.name;
+      this.reservationForm.controls
+        .cleaningServiceInfo
+        .patchValue({
+          name: this.companySelected.name,
+          cleaningService_id: this.companySelected._id
+        });
+    } else {
+      typeThisCompany = this.companySelected.costPerUnit.type;
+      this.companySelectedName = this.companySelected.cleaningServiceInfo.name;
+      this.reservationForm.controls
+        .cleaningServiceInfo
+        .patchValue({
+          name: this.companySelected.cleaningServiceInfo.name,
+          cleaningService_id: this.companySelected.cleaningServiceInfo.cleaningService_id
+        });
+    }
     this.cleaningTypeArray = this.cleaningTypeArray
       .filter((el) => el.value in typeThisCompany);
   }
 
-  ngOnDestroy() {
- //   if (this.isAuth) this.userInfoSubscription.unsubscribe();
-    if (this.isCompanySelected)
-      this.companyService.selectCompany(null);
+  onSubmit() {
+    if (this.companySelected.company) {
+      this.reservationForm.controls
+        .cleaningServiceInfo
+        .patchValue({
+          name: this.companySelected.name,
+          cleaningService_id: this.companySelected._id
+        });
+    } else {
+      this.reservationForm.controls
+        .cleaningServiceInfo
+        .patchValue({
+          name: this.companySelected.cleaningServiceInfo.name,
+          cleaningService_id: this.companySelected.cleaningServiceInfo.cleaningService_id
+        });
+    }
+    if (this.reservationForm.valid) {
+      this.reserveService.saveForm(this.reservationForm.value);
+      this.reserveService.calculatePrice(this.reservationForm.value);
+      this.router.navigate(['/reservation', {outlets: {modal: ['submit']}}]);
+    } else {
+      this.emptyField = true;
+      return;
+    }
   }
+
+  showOffers() {
+    this.reservationForm.controls.cleaningServiceInfo.setValue(null);
+    if (this.reservationForm.valid) {
+      this.saveForm();
+      this.router.navigate(['/offers']);
+    } else {
+      this.emptyField = true;
+      return;
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.isAuth) this.userInfoSubscription.unsubscribe();
+    if (this.isCompanySelected) {
+      this.companyService.onUnselectedCompany();
+    }
+  }
+
 }

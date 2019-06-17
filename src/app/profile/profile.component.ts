@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {UserModel} from '../shared/model/user.model';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from '../shared/service/auth.service';
+
 import {ReservationModel} from '../shared/model/reservation.model';
+import {UserModel} from '../shared/model/user.model';
+import {AuthService} from '../shared/service/auth.service';
 import {ReserveService} from '../shared/service/reserve.service';
 
 @Component({
@@ -15,6 +16,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   user: UserModel;
   profileForm: FormGroup;
   passMatch = true;
+  isChangePsw = false;
+  isShowOrder = false;
+  msgError: string;
   allOrders;
   private userInfoSubscription;
 
@@ -46,17 +50,35 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    const pristine = this.profileForm.controls.pass.pristine;
-    if (this.profileForm.controls.pass.valid || pristine) {
-      const pass = this.profileForm.get('pass.newPass').value;
-      const passConfirm = this.profileForm.get('pass.confirmPass').value;
-      if (pass !== passConfirm) {
+    const pristine = this.profileForm.controls.info.pristine;
+    if (this.profileForm.controls.info.valid && !pristine) {
+      this.authService.updateUserInfo(this.profileForm.value.info);
+    }
+  }
+
+  showAllOrders() {
+    this.isShowOrder = !this.isShowOrder;
+  }
+
+  changePsw() {
+    this.isChangePsw = !this.isChangePsw;
+    if (!this.isChangePsw) this.profileForm.controls.pass.reset();
+  }
+
+  savePsw() {
+    if (this.profileForm.controls.pass.pristine) {
+      this.isChangePsw = !this.isChangePsw;
+    }
+    if (this.profileForm.controls.pass.valid) {
+      const oldPsw = this.profileForm.get('pass.oldPass').value;
+      const psw = this.profileForm.get('pass.newPass').value;
+      const pswConfirm = this.profileForm.get('pass.confirmPass').value;
+      if (psw !== pswConfirm) {
         this.passMatch = false;
-        this.authService.updateUserInfo(this.profileForm.value.info);
-      } else if (pristine) {
-        this.authService.updateUserInfo(this.profileForm.value.info);
       } else {
-        this.authService.updateUserInfo(this.profileForm.value.info, this.profileForm.value.pass);
+        this.authService.updatePsw(oldPsw, psw).subscribe((response: { msg: string }) => {
+          this.msgError = response.msg;
+        });
       }
     }
   }
@@ -64,4 +86,5 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.userInfoSubscription.unsubscribe();
   }
+
 }

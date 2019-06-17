@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../../shared/service/auth.service';
+import {Router} from '@angular/router';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-signup-client',
@@ -10,8 +12,11 @@ import {AuthService} from '../../../shared/service/auth.service';
 export class SignupClientComponent implements OnInit, OnDestroy {
   signupFormClient: FormGroup;
   passMatch = true;
+  error: string;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService,
+              private router: Router,
+              private cookieService: CookieService) {
   }
 
   ngOnInit() {
@@ -30,7 +35,13 @@ export class SignupClientComponent implements OnInit, OnDestroy {
       this.passMatch = false;
       return;
     }
-    this.authService.createUser(this.signupFormClient.value);
+    this.authService.createUser(this.signupFormClient.value).subscribe(
+      response => this.router.navigate(['/']),
+      err => {
+        this.cookieService.deleteAll();
+        this.error = err.error.message;
+      }
+    );
   }
 
   ngOnDestroy() {

@@ -1,0 +1,55 @@
+@import "/~src/style/variables";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: .5rem 0;
+  padding: 1rem;
+  box-sizing: border-box;
+  .container-info, .text {
+    max-width: 40rem;
+  }
+  .container-info {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .author-info {
+      display: flex;
+      align-items: center;
+      img {
+        width: 2rem;
+        height: 2rem;
+        margin-right: 1rem;
+      }
+    }
+    p {
+      font-size: 1rem;
+      margin: 0 .5rem;
+    }
+  }
+  .text {
+    //margin-top: .5rem;
+    width: 100%;
+    margin: .5rem .8rem;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 0 5px $smoke;
+    background-color: #dddddd;
+  }
+  input {
+    box-sizing: content-box;
+    height: 1.5rem;
+    padding: .2rem;
+    border: .5px solid lightgray;
+    border-radius: 4px;
+    margin-left: 1rem;
+    margin-bottom: .5rem;
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px $black;
+    }
+  }
+}
+

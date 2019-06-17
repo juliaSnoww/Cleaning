@@ -1,8 +1,9 @@
 import {Component, DoCheck, OnChanges, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CompanyService} from '../shared/service/company.service';
-import {Company} from './company.model';
+import {Company} from '../shared/model/company.model';
 import {Router} from '@angular/router';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-company-list',
@@ -13,8 +14,9 @@ export class CompanyListComponent implements OnInit {
   private companies: object;
   private COMPANY;
   name;
+  nameForm;
   cleaningTypeArray = [
-    {value: 'all', display: 'All type'},
+    {value: 'all', display: 'type'},
     {value: 'standard', display: 'Standard'},
     {value: 'general', display: 'General'},
     {value: 'afterConstruction', display: 'Renovation'},
@@ -32,6 +34,9 @@ export class CompanyListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.nameForm = new FormGroup({
+      name: new FormControl('')
+    });
     this.companyService.getCompanies().subscribe(
       (res: Company) => {
         this.COMPANY = res.company;
@@ -41,7 +46,10 @@ export class CompanyListComponent implements OnInit {
   }
 
   searchByName() {
-    this.companies = this.COMPANY.filter((el) => !el.name.indexOf(this.name));
+    this.companies = this.COMPANY.filter((el) => {
+      if (!el.name) return false;
+      return !el.name.indexOf(this.nameForm.value.name);
+    });
   }
 
   searchByType(value) {
@@ -52,11 +60,20 @@ export class CompanyListComponent implements OnInit {
         return this.type in el.company.costPerUnit.type;
       });
     }
+    this.nameForm.reset();
   }
 
   order(company) {
     this.companyService.selectCompany(company);
     this.router.navigate(['/reservation']);
+  }
+
+  showCompany(company) {
+    this.companyService.selectCompany(company);
+    this.router.navigate(['/company-item', company.name]);
+  }
+  returnBack(e, block) {
+    if (!block.contains(e.target)) this.router.navigate(['/']);
   }
 
 }

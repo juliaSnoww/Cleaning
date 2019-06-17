@@ -4,10 +4,10 @@ Error: File to import not found or unreadable: /~src/style/variables.
 
 1: @import "/~src/style/variables";
 2: 
-3: header {
-4:   font-size: 2rem;
-5:   font-weight: 900;
-6:   color: $turquoise;
+3: .modal-container {
+4:   position: fixed;
+5:   top: 0;
+6:   width: 100%;
 
 Backtrace:
 reservation-history.component.scss:1
@@ -53,4 +53,4 @@ D:/Ruby25-x64/bin/scss:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: File to import not found or unreadable: /~src/style/variables.\A         on line 1 of reservation-history.component.scss\A \A 1: @import \"/~src/style/variables\";\A 2: \A 3: header {\A 4:   font-size: 2rem;\A 5:   font-weight: 900;\A 6:   color: $turquoise;"; }
+  content: "Error: File to import not found or unreadable: /~src/style/variables.\A         on line 1 of reservation-history.component.scss\A \A 1: @import \"/~src/style/variables\";\A 2: \A 3: .modal-container {\A 4:   position: fixed;\A 5:   top: 0;\A 6:   width: 100%;"; }

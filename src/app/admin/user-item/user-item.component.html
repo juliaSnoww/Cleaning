@@ -1,0 +1,27 @@
+<div class="container" *ngIf="company">
+  <div class="company-info">
+    <div class="company-text-info">
+      <p class="name">{{company.name }}</p>
+      <p>{{company.email}}</p>
+    </div>
+  </div>
+  <div class="info">
+    <form [formGroup]="reasonForm">
+    <textarea
+      formControlName="reason"
+      placeholder="Reason"
+      rows="4"
+      *ngIf='isUserBlock'
+      [value]=company.activeStatus.reason>
+    </textarea>
+      <div *ngIf='company.activeStatus.reason' style="margin-right: 1rem">
+        {{company.activeStatus.reason}}
+      </div>
+    </form>
+    <p class="status"
+       [style.color]="company.activeStatus.status? 'green':'red'">
+      {{company.activeStatus.status? 'active' : 'inactive'}}</p>
+    <button (click)="blockUser(company)">{{company.activeStatus.status? 'block': 'unblock'}}</button>
+  </div>
+
+</div>

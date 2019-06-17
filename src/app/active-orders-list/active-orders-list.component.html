@@ -1,0 +1,11 @@
+<div *ngIf="allOrders" class="container">
+
+  <div
+    *ngFor="let order of allOrders"
+    class="my-orders"
+    [routerLink]="['/active-order-list/',{ outlets: { modal: ['order', order._id] } }]">
+    <app-mini-reserve-history [item]=order></app-mini-reserve-history>
+  </div>
+
+</div>
+<router-outlet name="modal"></router-outlet>

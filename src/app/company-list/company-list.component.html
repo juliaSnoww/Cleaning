@@ -1,27 +1,31 @@
-<input type="text" [(ngModel)]=name (change)="searchByName()" placeholder="name">
+<div class="page" (click)="returnBack($event, container)">
+  <div class="container" #container>
 
-<select name="regularity" [(ngModel)]="type" (ngModelChange)="searchByType($event)">
-  <option *ngFor="let type of cleaningTypeArray" [ngValue]="type.value">
-    {{type.display}}
-  </option>
-</select>
+    <div class="search-container">
+      <h3>Search by</h3>
+      <form [formGroup]="nameForm">
+        <input type="text" formControlName="name" (input)="searchByName()" placeholder="name">
+      </form>
 
-<button (click)="searchByName()">search by name</button>
-
-<div *ngIf="companies">
-
-  <div class="container" *ngFor="let company of companies">
-    <div class="company-container">
-      <div class="company-info">
-        <img src="../../assets/13441586.jpeg">
-        <div class="company-text-info">
-          <h3>{{company.name}} {{company.company.rate}}</h3>
-          <p>{{company.company.address}}</p>
-        </div>
-      </div>
-      <button (click)="order(company)">order</button>
+      <select name="regularity" [(ngModel)]="type" (ngModelChange)="searchByType($event)">
+        <option *ngFor="let type of cleaningTypeArray" [ngValue]="type.value">
+          {{type.display}}
+        </option>
+      </select>
     </div>
+
+    <div *ngIf="companies">
+      <div class="company-container" *ngFor="let company of companies">
+        <div class="company-info">
+          <img src="../../assets/13441586.jpeg">
+          <div class="company-text-info">
+            <h3><a (click)="showCompany(company)">{{company.name}}</a> ✡ {{company.company.rate}}</h3>
+            <p>{{company.company.address}}</p>
+          </div>
+        </div>
+        <button (click)="order(company)">order</button>
+      </div>
+    </div>
+
   </div>
-
 </div>
-

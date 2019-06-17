@@ -13,8 +13,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.authService.autoAuthUser();
-    const isAuth = this.authService.getIsAuth();
-    if (isAuth) this.authService.getUserInfoQuery();
   }
 }
 

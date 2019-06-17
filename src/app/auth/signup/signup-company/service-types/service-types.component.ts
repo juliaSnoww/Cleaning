@@ -50,6 +50,7 @@ export class ServiceTypesComponent implements OnInit {
       rooms: this.serviceTypeForm.value.rooms
     });
     this.serviceType.emit(formValue);
+
   }
 
   private addCheckboxes() {

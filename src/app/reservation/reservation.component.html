@@ -1,99 +1,103 @@
-<div class="container">
-  <header>Order Cleaning!</header>
-  <form [formGroup]="reservationForm" (submit)="saveForm()">
+<div class="page">
 
-    <div>
-      <span class="header">When</span>
-      <input type="date" formControlName="date">
-      <select name="cleanTime" formControlName="time">
-        <option *ngFor="let time of timeArray" [ngValue]="time">
-          {{time}}
-        </option>
-      </select>
-    </div>
+  <div class="container">
+    <header>Order Cleaning!</header>
+    <form [formGroup]="reservationForm" (submit)="showOffers()">
 
-
-    <div>
-      <span class="header">How often </span>
-      <select name="regularity" formControlName="regularity">
-        <option *ngFor="let regularity of regularityArray" [ngValue]="regularity.value">
-          {{regularity.display}}
-        </option>
-      </select>
-    </div>
-
-    <div>
-      <span class="header">Type of cleaning</span>
-
-      <div class="cleaning-type-box">
-        <div
-          [style.backgroundColor]="radioBtn.checked? '#00ADB5' : 'whitesmoke'"
-          [style.boxShadow]="radioBtn.checked? '0 0 5px white' : '0 0 1px gray'"
-          class="cleaning-type"
-          (click)=radioBtn.click()
-          *ngFor="let cleaningType of cleaningTypeArray">
-
-          <label [for]="cleaningType.value"> {{cleaningType.display}} </label>
-
-          <img [src]="cleaningType.img">
-
-          <input
-            type="radio"
-            formControlName="cleaningType"
-            #radioBtn
-            [id]="cleaningType"
-            [value]="cleaningType.value"
-            hidden>
-        </div>
+      <div>
+        <span class="header">When</span>
+        <input type="date" formControlName="date">
+        <select name="cleanTime" formControlName="time">
+          <option *ngFor="let time of timeArray" [ngValue]="time">
+            {{time}}
+          </option>
+        </select>
       </div>
 
-    </div>
 
-    <div formGroupName="apartmentDescription">
-      <p>Rooms</p>
-      Large room( > 35 m2)
-      <input type="number" formControlName="countOfLargeRoom"> <br>
-      Regular room
-      <input type="number" formControlName="countOfStandardRoom"><br>
-      Bathroom
-      <input type="number" formControlName="countOfBath">
-    </div>
+      <div>
+        <span class="header">How often </span>
+        <select name="regularity" formControlName="regularity">
+          <option *ngFor="let regularity of regularityArray" [ngValue]="regularity.value">
+            {{regularity.display}}
+          </option>
+        </select>
+      </div>
 
-    <div>
-      <p>Your address
-        <input type="text" formControlName="address"></p>
-    </div>
+      <div>
+        <span class="header">Type of cleaning</span>
 
-    <div *ngIf="!isAuth" formGroupName="userInfo">
-      <p>Email
-        <input type="text" formControlName="email"></p>
-    </div>
+        <div class="cleaning-type-box">
+          <div
+            [style.backgroundColor]="radioBtn.checked? '#00ADB5' : 'whitesmoke'"
+            [style.boxShadow]="radioBtn.checked? '0 0 5px white' : '0 0 1px gray'"
+            class="cleaning-type"
+            (click)=radioBtn.click()
+            *ngFor="let cleaningType of cleaningTypeArray">
 
-    <div *ngIf="isCompanySelected">
-      <p> Implementer
-        <input type="text" readonly [value]="companySelected.name">
-      </p>
-    </div>
+            <label [for]="cleaningType.value"> {{cleaningType.display}} </label>
 
-    <button
-      type="button"
-      *ngIf="isCompanySelected"
-      (click)="onSubmit()"
-      [routerLink]="['/reservation',{ outlets: { submit: ['submit'] } }]">
-      Reserve
-    </button>
+            <img [src]="cleaningType.img">
 
-    <button *ngIf="!isCompanySelected">Show offers</button>
-    <br>
+            <input
+              type="radio"
+              formControlName="cleaningType"
+              #radioBtn
+              [id]="cleaningType"
+              [value]="cleaningType.value"
+              hidden>
+          </div>
+        </div>
 
-    <button
-      *ngIf="!isCompanySelected"
-      type="button"
-      style="background-color: #80c851; margin-top: 1rem"
-      routerLink="/company-list">
-      Show company
-    </button>
-  </form>
+      </div>
 
+      <div formGroupName="apartmentDescription">
+        <p>Rooms</p>
+        Large room( > 35 m2)
+        <input type="number" formControlName="countOfLargeRoom"> <br>
+        Regular room
+        <input type="number" formControlName="countOfStandardRoom"><br>
+        Bathroom
+        <input type="number" formControlName="countOfBath">
+      </div>
+
+      <div>
+        <p>Your address
+          <input type="text" formControlName="address"></p>
+      </div>
+
+      <div *ngIf="!isAuth" formGroupName="userInfo">
+        <p>Email
+          <input type="text" formControlName="email"></p>
+      </div>
+
+      <div *ngIf="isCompanySelected">
+        <p> Implementer
+          <input type="text" readonly [value]="companySelectedName">
+        </p>
+      </div>
+
+      <p *ngIf="emptyField" class="error">Fill all fields </p>
+
+      <button
+        type="button"
+        *ngIf="isCompanySelected"
+        (click)="onSubmit()">
+        Reserve
+      </button>
+
+      <button *ngIf="!isCompanySelected">Show offers</button>
+      <br>
+
+      <button
+        *ngIf="!isCompanySelected"
+        type="button"
+        style="background-color: #80c851; margin-top: 1rem"
+        routerLink="/company-list">
+        Show company
+      </button>
+
+    </form>
+  </div>
 </div>
-<router-outlet name="submit"></router-outlet>
+<router-outlet name="modal"></router-outlet>

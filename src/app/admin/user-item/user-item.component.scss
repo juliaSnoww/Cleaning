@@ -1,0 +1,40 @@
+@import "~src/style/variables";
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  box-shadow: 1px 1px 10px $smoke;
+  background-color: $smoke;
+  p {
+    &.name {
+      font-weight: bold;
+      font-size: 1.5rem;
+      margin-bottom: .8rem;
+    }
+    &.status {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: white;
+    }
+  }
+  .info{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 18rem;
+  }
+  textarea{
+    resize: none;
+    font-size: .8rem;
+  }
+  button {
+    width: 5rem;
+    margin-left: 1rem;
+    border: none;
+    background-color: $button-color;
+    color: $gray;
+    padding: .5rem;
+  }
+}

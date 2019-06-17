@@ -1,20 +1,25 @@
 <nav>
 
-    <div class="logo">
-      <a routerLink=""><b>Cleaning</b> Service</a>
-    </div>
+  <div class="logo">
+    <a routerLink=""><b>Cleaning</b> Service</a>
+  </div>
 
-    <div>
-      <ul class="nav-list">
-        <li *ngIf="userAuth" routerLinkActive="active"><a routerLink="/profile">Profile</a></li>
-        <li *ngIf="!userAuth" routerLinkActive="active"><a routerLink="/login">Login</a></li>
-        <li *ngIf="!userAuth" routerLinkActive="active"><a routerLink="/signup/client">Signup</a></li>
-        <li *ngIf="userAuth">
-          <button (click)="onLogout()">
-            Logout
-          </button>
-        </li>
-      </ul>
-    </div>
+  <a routerLink="/active-order-list" *ngIf="isCompany">Active order</a>
+
+  <div>
+    <ul class="nav-list">
+      <li *ngIf="isAdmin" routerLinkActive="active"><a routerLink="/admin/customer">Client-list</a></li>
+      <li *ngIf="isAdmin" routerLinkActive="active"><a routerLink="/admin/company">Company-list</a></li>
+      <li *ngIf="userAuth && (!isCompany && !isAdmin)" routerLinkActive="active"><a routerLink="/profile">Profile</a></li>
+      <li *ngIf="userAuth && (isCompany && !isAdmin)" routerLinkActive="active"><a routerLink="/profile-company">Profile</a></li>
+      <li *ngIf="!userAuth" routerLinkActive="active"><a routerLink="/login">Login</a></li>
+      <li *ngIf="!userAuth" routerLinkActive="active"><a routerLink="/signup/client">Signup</a></li>
+      <li *ngIf="userAuth">
+        <button (click)="onLogout()">
+          Logout
+        </button>
+      </li>
+    </ul>
+  </div>
 
 </nav>

@@ -1,19 +1,22 @@
 const express = require('express');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const passportConfig = require('./config/auth-init');
+
 const userRoutes = require('./routes/user');
 const companyRoutes = require('./routes/company');
 const serviceRoutes = require('./routes/services');
-const cookieParser = require('cookie-parser');
+const commentsRoutes = require('./routes/comments');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 
 mongoose
-  .connect('mongodb://localhost:27017/MyDb')
-  //.connect('mongodb://yulek:DPuvQGHTIu6ki95O@cluster0-shard-00-00-ikzkx.mongodb.net:27017,cluster0-shard-00-01-ikzkx.mongodb.net:27017,cluster0-shard-00-02-ikzkx.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true', {useNewUrlParser: true})
+  .connect('mongodb://localhost:27017/test')
+  // .connect('mongodb://yulek:DPuvQGHTIu6ki95O@cluster0-shard-00-00-ikzkx.mongodb.net:27017,cluster0-shard-00-01-ikzkx.mongodb.net:27017,cluster0-shard-00-02-ikzkx.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true', {useNewUrlParser: true})
   .then(() => {
     console.log('Connected to DataBase');
   })
@@ -51,6 +54,12 @@ const sessionMiddleware = session({
 
 app.use(cookieParser());
 app.use(sessionMiddleware);
+app.use((req, res, next) => {
+  if (req.cookies.user_sid && !req.session.user) {
+    res.clearCookie('user_sid');
+  }
+  next();
+});
 passportConfig();
 app.use(passport.initialize());
 app.use(passport.session());
@@ -59,5 +68,7 @@ app.use(passport.session());
 app.use('/api/user', userRoutes);
 app.use('/api/company', companyRoutes);
 app.use('/api/service', serviceRoutes);
+app.use('/api/comments', commentsRoutes);
+app.use('/api/admin', adminRoutes);
 
 module.exports = app;

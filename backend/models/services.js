@@ -21,10 +21,11 @@ const serviceSchema = mongoose.Schema({
   cleaningDate: Date,
   preferredTime: String,
   regularity: String,
-  cost: Number,
+  price: Number,
   statusInfo: {
+    text: String,
     active: Boolean,
-    status: String
+    status: String  // new confirm cancel
   }
 });
 

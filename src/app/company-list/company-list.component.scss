@@ -1,35 +1,103 @@
 @import "/~src/style/variables";
-.container {
+
+.page {
+  min-height: 93vh;
   display: flex;
   justify-content: center;
-  .company-container {
-    width: 50%;
-    min-width: 40rem;
+  .container {
+    width: 60%;
+    background-color: #fff;
+    box-shadow: 0 0 5px #9a9a9a;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    margin: 1rem;
-    background-color: $smoke;
-    .company-info {
+    flex-direction: column;
+    .company-container {
+      width: 60%;
+      min-width: 35rem;
       display: flex;
-      .company-text-info {
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      margin: 1rem;
+      background-color: $smoke;
+      .company-info {
         display: flex;
-        flex-direction: column;
-        justify-content: space-around;
+        .company-text-info {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+        }
+      }
+      a {
+        color: $gray;
+        cursor: pointer;
+        &:hover {
+          color: $turquoise;
+        }
+      }
+      img {
+        width: 5rem;
+        height: 5rem;
+        margin-right: 1rem;
+      }
+      button {
+        height: 30%;
+        border: none;
+        border-radius: 3px;
+        background-color: $button-color;
+        color: $black;
+        padding: .7rem;
+        &:hover {
+          background-color: $turquoise;
+          cursor: pointer;
+          color: white;
+          box-shadow: 0 0 5px white;
+        }
       }
     }
-    img {
-      width: 5rem;
-      height: 5rem;
-      margin-right: 1rem;
+    .search-container {
+      display: flex;
+      margin: 1rem;
+      justify-content: center;
+      align-items: stretch;
+      select, form input {
+        box-sizing: border-box;
+        height: 1.5rem;
+        width: 10rem;
+        margin: 0 1rem;
+      }
     }
-    button {
-      height: 30%;
-      border: none;
-      background-color: $button-color;
-      color: $gray;
-      padding: .5rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  .page {
+    .container {
+      width: 80%;
+    }
+  }
+}
+
+@media (max-width: 750px) {
+  .page {
+    .container {
+      width: 100%;
+      min-width: 500px;
+      .company-container {
+        width: 100%;
+        min-width: 25rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  .page {
+    .container {
+      min-width: 300px;
+      .company-container {
+        min-width: 20rem;
+      }
     }
   }
 }

@@ -32,32 +32,35 @@
     <p>Bathroom
       <input type="number" formControlName="bath">
     </p>
-    <p
-      class="error"
-      *ngIf="serviceTypeForm.get('rooms.bath').invalid && serviceTypeForm.get('rooms.bath').touched">
-      Please enter Name your company
-    </p>
+    <!--<p-->
+    <!--class="error"-->
+    <!--*ngIf="serviceTypeForm.get('rooms.bath').invalid && serviceTypeForm.get('rooms.bath').touched">-->
+    <!--Please enter price for room-->
+    <!--</p>-->
 
     <p>Standard room
       <input type="number" formControlName="standard">
     </p>
-    <p
-      class="error"
-      *ngIf="serviceTypeForm.get('rooms.standard').invalid && serviceTypeForm.get('rooms.standard').touched">
-      Please enter Name your company
-    </p>
+    <!--<p-->
+    <!--class="error"-->
+    <!--*ngIf="serviceTypeForm.get('rooms.standard').invalid && serviceTypeForm.get('rooms.standard').touched">-->
+    <!--Please enter price for room-->
+    <!--</p>-->
 
     <p>Large room(>35m<sup>2</sup>)
       <input type="number" formControlName="large">
     </p>
-    <p
-      class="error"
-      *ngIf="serviceTypeForm.get('rooms.large').invalid && serviceTypeForm.get('rooms.large').touched">
-      Please enter Name your company
-    </p>
+    <!--<p-->
+    <!--class="error"-->
+    <!--*ngIf="serviceTypeForm.get('rooms.large').invalid && serviceTypeForm.get('rooms.large').touched">-->
+    <!--Please enter price for room-->
+    <!--</p>-->
 
+    <p class="error"
+       *ngIf="serviceTypeForm.get('rooms').invalid && serviceTypeForm.get('rooms').touched">
+      please input price for rooms</p>
   </div>
-
+  <p *ngIf="">Fill all fields</p>
   <button>submit</button>
 </form>
 

@@ -10,6 +10,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isClient = true;
+  msgError;
 
   constructor(private authService: AuthService) {
   }
@@ -24,8 +25,14 @@ export class LoginComponent implements OnInit {
   onLogin() {
     if (this.isClient) {
       this.authService.login(this.loginForm.value);
+      this.authService.getMsgError().subscribe(err => {
+        this.msgError = err;
+      });
     } else {
       this.authService.loginCompany(this.loginForm.value);
+      this.authService.getMsgError().subscribe(err => {
+        this.msgError = err;
+      });
     }
   }
 

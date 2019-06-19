@@ -2,30 +2,30 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const serviceSchema = mongoose.Schema({
-  address: String,
+  address: {type: String, required: true},
   userInfo: {
-    email: String,
+    email: {type: String, required:true},
     user_id: {type: Schema.Types.ObjectId, ref: 'User'},
-    contactInfo: String
+    contactInfo: {type: String, required:true}
   },
   cleaningServiceInfo: {
-    name: String,
+    name: {type: String, required:true},
     cleaningService_id: {type: Schema.Types.ObjectId, ref: 'User'}
   },
-  cleaningType: String,
+  cleaningType: {type: String, required:true},
   apartmentDescription: {
-    countOfBath: Number,
-    countOfStandardRoom: Number,
-    countOfLargeRoom: Number
+    countOfBath: {type: Number, required:true},
+    countOfStandardRoom: {type: Number, required:true},
+    countOfLargeRoom: {type: Number, required:true}
   },
-  cleaningDate: Date,
-  preferredTime: String,
-  regularity: String,
-  price: Number,
+  cleaningDate: {type: Date, required:true},
+  preferredTime: {type: String, required:true},
+  regularity: {type: String, required:true},
+  price: {type: Number, required:true},
   statusInfo: {
-    text: String,
-    active: Boolean,
-    status: String  // new confirm cancel
+    text: {type: String, required:true},
+    active: {type: Boolean, required:true},
+    status: {type: String, required:true}  // new confirm cancel
   }
 });
 

@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 import {ReservationModel} from '../shared/model/reservation.model';
 import {UserModel} from '../shared/model/user.model';
 import {AuthService} from '../shared/service/auth.service';
 import {ReserveService} from '../shared/service/reserve.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -20,9 +21,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
   isShowOrder = false;
   msgError: string;
   allOrders;
+  imageUrl;
   private userInfoSubscription;
 
   constructor(private http: HttpClient,
+              private router: Router,
               private authService: AuthService,
               private fb: FormBuilder,
               private reserveService: ReserveService) {
@@ -32,8 +35,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.userInfoSubscription = this.authService.getJustUserInfo().subscribe(
       (response: ReservationModel) => {
         this.user = response.userInfo;
+        this.imageUrl = this.user.imagePath || null;
+        console.log(response);
         this.profileForm = this.fb.group({
           info: new FormGroup({
+            imagePath: new FormControl(this.imageUrl),
             name: new FormControl(this.user.name, Validators.required),
             email: new FormControl(this.user.email || 0, [Validators.required, Validators.email]),
             address: new FormControl(this.user.address || '55', Validators.required)
@@ -49,11 +55,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .subscribe(res => this.allOrders = res);
   }
 
+  onImagePicked(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.profileForm.get('info').patchValue({imagePath: file});
+    this.profileForm.get('info').get('imagePath').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imageUrl = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
   onSubmit() {
-    const pristine = this.profileForm.controls.info.pristine;
-    if (this.profileForm.controls.info.valid && !pristine) {
+    if (this.profileForm.controls.info.valid)
       this.authService.updateUserInfo(this.profileForm.value.info);
-    }
   }
 
   showAllOrders() {
@@ -81,6 +96,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
         });
       }
     }
+  }
+
+  returnBack(e, block) {
+    if (!block.contains(e.target)) this.router.navigate(['/']);
   }
 
   ngOnDestroy() {

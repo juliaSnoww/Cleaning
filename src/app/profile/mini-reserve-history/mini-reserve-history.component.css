@@ -4,10 +4,10 @@ Error: File to import not found or unreadable: /~src/style/variables.
 
 1: @import "/~src/style/variables";
 2: 
-3: 
-4:   .container {
-5:     width: 40rem;
-6:     display: flex;
+3: .container-info {
+4:   width: 40rem;
+5:   display: flex;
+6:   margin: 1rem 0;
 
 Backtrace:
 mini-reserve-history.component.scss:1
@@ -53,4 +53,4 @@ D:/Ruby25-x64/bin/scss:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: File to import not found or unreadable: /~src/style/variables.\A         on line 1 of mini-reserve-history.component.scss\A \A 1: @import \"/~src/style/variables\";\A 2: \A 3: \A 4:   .container {\A 5:     width: 40rem;\A 6:     display: flex;"; }
+  content: "Error: File to import not found or unreadable: /~src/style/variables.\A         on line 1 of mini-reserve-history.component.scss\A \A 1: @import \"/~src/style/variables\";\A 2: \A 3: .container-info {\A 4:   width: 40rem;\A 5:   display: flex;\A 6:   margin: 1rem 0;"; }

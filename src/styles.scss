@@ -11,8 +11,13 @@
   font-family: "Montserrat", serif;
 }
 
-input {
+input, select {
   font-size: .85rem;
+}
+
+.page .container {
+  background-color: #f1f1f1;
+  box-shadow: 0 0 5px #9a9a9a;
 }
 
 a {

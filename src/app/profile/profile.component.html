@@ -1,12 +1,19 @@
-<div class="page">
-  <div class="container">
+<div class="page" (click)="returnBack($event, container)">
+  <div class="container" #container>
     <form
       *ngIf="profileForm"
       [formGroup]="profileForm"
       (ngSubmit)="onSubmit()">
       <div class="container-info">
 
-        <img src="../../assets/13441586.jpeg" alt="prianyk">
+        <div class="photo">
+          <img [src]="imageUrl || '../../../assets/13441586.jpeg'" alt="prianyk" (click)="filePicker.click()">
+          <input
+            type="file"
+            hidden
+            #filePicker
+            (change)="onImagePicked($event)">
+        </div>
 
         <div class="info" formGroupName="info">
 
@@ -50,7 +57,7 @@
         </div>
 
       </div>
-      <button [disabled]="profileForm.pristine">save</button>
+      <button >save</button>
       <br>
       <button (click)="changePsw()" type="button">Change password</button>
       <div class="password-container" formGroupName="pass" *ngIf="isChangePsw">
@@ -105,12 +112,13 @@
 
     </form>
 
-    <button class="button-of-orders" (click)="showAllOrders()" >Show my orders &#9660;</button>
+    <button class="button-of-orders" (click)="showAllOrders()">Show my orders &#9660;</button>
     <div *ngIf="isShowOrder">
       <div
         *ngFor="let order of allOrders"
         class="my-orders"
         [routerLink]="['/profile/',{ outlets: { modal: ['order', order._id] } }]">
+        <p *ngIf="!allOrders">You don't have orders</p>
         <app-mini-reserve-history [item]=order></app-mini-reserve-history>
       </div>
     </div>

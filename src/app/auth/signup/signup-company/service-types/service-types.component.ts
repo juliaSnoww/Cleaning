@@ -75,7 +75,7 @@ function minSelectedCheckboxes(min = 1) {
 function transformToObj(array) {
   let obj = {};
   array.forEach((el) => {
-    obj[el.value] = el.cost;
+    obj[el.value] = +el.cost;
   });
   return obj;
 }

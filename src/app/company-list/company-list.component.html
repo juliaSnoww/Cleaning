@@ -17,13 +17,15 @@
     <div *ngIf="companies">
       <div class="company-container" *ngFor="let company of companies">
         <div class="company-info">
-          <img src="../../assets/13441586.jpeg">
+
+          <img [src]=" company.company.logo || '../../assets/13441586.jpeg'">
           <div class="company-text-info">
             <h3><a (click)="showCompany(company)">{{company.name}}</a> ✡ {{company.company.rate}}</h3>
             <p>{{company.company.address}}</p>
           </div>
         </div>
         <button (click)="order(company)">order</button>
+
       </div>
     </div>
 

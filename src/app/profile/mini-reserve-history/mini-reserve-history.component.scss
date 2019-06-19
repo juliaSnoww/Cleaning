@@ -1,37 +1,42 @@
 @import "/~src/style/variables";
 
+.container-info {
+  width: 40rem;
+  display: flex;
+  margin: 1rem 0;
+  flex-direction: column;
+  align-items: center;
+  background-color: #dddddd;
+  padding: 2rem;
+  box-sizing: border-box;
+  box-shadow: 0 0 7px;
 
-  .container {
-    width: 40rem;
-    display: flex;
-    margin: 1rem 0;
-    flex-direction: column;
-    align-items: center;
-    background-color: #dddddd;
-    padding: 2rem;
-    box-sizing: border-box;
-    box-shadow: 0 0 7px;
-
-    span.header, p {
-      color: black;
-      font-size: .9rem;
-    }
-    .status-info {
-      width: 100%;
-      text-align: end;
-      margin-bottom: 1rem;
-    }
-    input {
-      box-sizing: content-box;
-      height: 1.5rem;
-      padding: .2rem;
-      border: .5px solid lightgray;
-      border-radius: 4px;
-      margin-left: 1rem;
-      margin-bottom: .5rem;
-      &:focus {
-        outline: none;
-        box-shadow: 0 0 5px $black;
-      }
+  span.header, p {
+    color: black;
+    font-size: .9rem;
+  }
+  .status-info {
+    width: 100%;
+    text-align: end;
+    margin-bottom: 1rem;
+  }
+  input {
+    box-sizing: content-box;
+    height: 1.5rem;
+    padding: .2rem;
+    border: .5px solid lightgray;
+    border-radius: 4px;
+    margin-left: 1rem;
+    margin-bottom: .5rem;
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px $black;
     }
   }
+}
+
+@media (max-width: 550px) {
+  .container-info {
+    width: auto;
+  }
+}

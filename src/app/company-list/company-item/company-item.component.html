@@ -1,11 +1,11 @@
-<div class="page" (click)="returnBack($event, container)" >
+<div class="page" (click)="returnBack($event, container)">
   <div class="back-to-list" routerLink="/company-list"><---</div>
-  <div class="container"  #container>
+  <div class="container" #container>
 
-    <form *ngIf="company" >
+    <form *ngIf="company">
       <div class="container-info">
 
-        <img src="../../../assets/13441586.jpeg" alt="prianyk">
+        <img [src]=" logoURL || '../../../assets/13441586.jpeg'" alt="prianyk">
 
         <div class="info">
           <h2 style="letter-spacing: 2px">{{companyName}} ✡{{company.rate}}</h2>
@@ -44,6 +44,7 @@
         <button class="button-of-orders" (click)="order()">Make Order</button>
       </div>
     </form>
+
     <div class="comments-container" *ngFor="let comment of commentsArray">
       <app-comments [comment]=comment></app-comments>
     </div>
@@ -51,8 +52,21 @@
     <div class="add-comment" [formGroup]="commentForm" *ngIf="isAuth">
       <textarea formControlName="text"></textarea>
       <div>
-        <i class="fas fa-star icon"></i>
-        <input type="number" formControlName="rate" maxlength="1" min="1" max="5">
+
+        <div class="comment-container">
+          <ng-template #template let-fill="fill">
+            <span class="star" [class.full]="fill == 100">
+              <span class="half">&hearts;</span>
+            </span>
+          </ng-template>
+
+          <ngb-rating
+            formControlName="rate"
+            [starTemplate]="template"
+            max="5">
+          </ngb-rating>
+        </div>
+
         <button (click)="sendComment()">send</button>
       </div>
 

@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {UserModel} from '../../shared/model/user.model';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 
 import {AuthService} from '../../shared/service/auth.service';
-import {ReservationModel} from '../../shared/model/reservation.model';
 import {Company} from '../../shared/model/company.model';
 import {CompanyService} from '../../shared/service/company.service';
 
@@ -22,6 +20,7 @@ export class CompanyComponent implements OnInit {
   msgError: string;
   private userInfoSubscription;
   commentsArray;
+  imageUrl;
   type = [
     {cost: 0, display: 'Standard', value: 'standard'},
     {cost: 0, display: 'General', value: 'general'},
@@ -44,10 +43,12 @@ export class CompanyComponent implements OnInit {
       (response: Company) => {
         console.log(response);
         this.company = response.company;
+        this.imageUrl = this.company.logo || null;
         const name = response.name;
         const rooms = this.company.costPerUnit.rooms;
         this.profileForm = this.fb.group({
           info: new FormGroup({
+            logo: new FormControl(this.imageUrl),
             type: new FormArray([], minSelectedCheckboxes(1)),
             name: new FormControl(name, Validators.required),
             rate: new FormControl(this.company.rate),
@@ -73,6 +74,17 @@ export class CompanyComponent implements OnInit {
         this.companyService.getComments('company')
           .subscribe(comments => this.commentsArray = comments);
       });
+  }
+
+  onImagePicked(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.profileForm.get('info').patchValue({logo: file});
+    this.profileForm.get('info').get('logo').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imageUrl = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
 
   changePsw() {
@@ -104,8 +116,7 @@ export class CompanyComponent implements OnInit {
   }
 
   onSubmit() {
-    const pristine = this.profileForm.controls.info.pristine;
-    if (this.profileForm.controls.info.valid && !pristine) {
+    if (this.profileForm.controls.info.valid) {
       let type = this.profileForm.value.info.type.map((selected, i) => {
         return {
           cost: this.type[i].cost,

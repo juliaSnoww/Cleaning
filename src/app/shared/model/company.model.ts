@@ -4,6 +4,7 @@ export interface Company {
       type: object;
       rooms: object;
     };
+    logo: string;
   };
   name: string;
   _id: string;

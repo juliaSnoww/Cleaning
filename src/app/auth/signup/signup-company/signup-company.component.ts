@@ -31,6 +31,7 @@ export class SignupCompanyComponent implements OnInit, OnDestroy {
 
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
+    this.signupFormCompany.patchValue({logo: file});
     this.signupFormCompany.get('logo').updateValueAndValidity();
     const reader = new FileReader();
     reader.onload = () => {

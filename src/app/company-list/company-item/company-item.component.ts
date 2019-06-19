@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CompanyService} from '../../shared/service/company.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Company} from '../../shared/model/company.model';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../shared/service/auth.service';
 
 @Component({
@@ -19,11 +19,12 @@ export class CompanyItemComponent implements OnInit, OnDestroy {
   private idCompany;
   private commentsArray;
   private isAuth;
+  private logoURL;
 
   cleaningTypeArray = [
     {value: 'standard', display: 'Standard', img: './assets/type cleaning/color/1sweep.svg'},
     {value: 'general', display: 'General', img: './assets/type cleaning/color/1washbowl.svg'},
-    {value: 'afterRenovation', display: 'Renovation', img: './assets/type cleaning/color/1hammer.svg'},
+    {value: 'afterConstruction', display: 'Renovation', img: './assets/type cleaning/color/1hammer.svg'},
     {value: 'carpetCleaning', display: 'Carpet', img: './assets/type cleaning/color/1rug.svg'},
     {value: 'officeCleaning', display: 'Office', img: './assets/type cleaning/color/1desk.svg'},
     {value: 'furnitureCleaning', display: 'Furniture', img: './assets/type cleaning/color/1sofa.svg'},
@@ -47,6 +48,7 @@ export class CompanyItemComponent implements OnInit, OnDestroy {
           this.commentsArray = comments;
         });
       this.company = res.company;
+      this.logoURL = res.company.logo;
       this.company.cleaningServiceInfo = {
         name: res.name,
         cleaningService_id: res._id
@@ -57,8 +59,8 @@ export class CompanyItemComponent implements OnInit, OnDestroy {
         .filter(el => el.value in this.company.costPerUnit.type);
     });
     this.commentForm = new FormGroup({
-      text: new FormControl(null),
-      rate: new FormControl(null)
+      text: new FormControl(null, Validators.required),
+      rate: new FormControl(null, Validators.required)
     });
 
   }

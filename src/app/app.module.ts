@@ -28,6 +28,7 @@ import { ActiveOrdersListComponent } from './active-orders-list/active-orders-li
 import { OrderComponent } from './active-orders-list/order/order.component';
 import { CustomerComponent } from './admin/customer/customer.component';
 import { UserItemComponent } from './admin/user-item/user-item.component';
+import { OnlyIntegerDirective } from './shared/directive/only-integer.directive';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { UserItemComponent } from './admin/user-item/user-item.component';
     OrderComponent,
     CustomerComponent,
     UserItemComponent,
+    OnlyIntegerDirective,
   ],
   imports: [
     BrowserModule,

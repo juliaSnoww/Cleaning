@@ -17,8 +17,9 @@ nav {
   nav .nav-list {
     display: flex; }
     nav .nav-list li {
-      font-size: 1rem;
       margin-right: 1rem; }
+      nav .nav-list li button, nav .nav-list li li, nav .nav-list li a {
+        font-size: 1rem; }
       nav .nav-list li:hover a {
         font-weight: 900;
         color: #00adb5; }

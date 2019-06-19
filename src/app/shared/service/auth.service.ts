@@ -60,15 +60,27 @@ export class AuthService {
   }
 
   updateUserInfo(userInfo) {
-    this.http.put('http://localhost:3000/api/user/login/info', userInfo)
+    const userData = new FormData();
+    userData.append('imagePath', userInfo.imagePath);
+    userData.append('name', userInfo.name);
+    userData.append('email', userInfo.email);
+    userData.append('address', userInfo.address);
+
+    this.http.put('http://localhost:3000/api/user/login/info', userData)
       .subscribe(response => {
         console.log(response);
       });
   }
 
   updateCompanyInfo(companyInfo) {
-    console.log(companyInfo);
-    this.http.put('http://localhost:3000/api/company/login/info', companyInfo)
+    const companyData = new FormData();
+    companyData.append('logo', companyInfo.logo);
+    companyData.append('name', companyInfo.name);
+    companyData.append('address', companyInfo.address);
+    companyData.append('description', companyInfo.description);
+    companyData.append('rooms', JSON.stringify(companyInfo.rooms));
+    companyData.append('type', JSON.stringify(companyInfo.type));
+    this.http.put('http://localhost:3000/api/company/login/info', companyData)
       .subscribe(response => {
         console.log(response);
       });
@@ -82,8 +94,16 @@ export class AuthService {
     return this.http.post('http://localhost:3000/api/user/signup', authData);
   }
 
-  createCompany(form) {
-    this.http.post('http://localhost:3000/api/company/signup', form)
+  createCompany(companyInfo) {
+    const companyData = new FormData();
+    companyData.append('name', companyInfo.name);
+    companyData.append('email', companyInfo.email);
+    companyData.append('description', companyInfo.description);
+    companyData.append('logo', companyInfo.logo);
+    companyData.append('address', companyInfo.address);
+    companyData.append('password', companyInfo.password);
+    companyData.append('costPerUnit', JSON.stringify(companyInfo.costPerUnit));
+    this.http.post('http://localhost:3000/api/company/signup', companyData)
       .subscribe(res => {
         console.log(res);
         this.router.navigate(['/']);
@@ -111,7 +131,6 @@ export class AuthService {
   login(authData) {
     this.http.post('http://localhost:3000/api/user/login', authData)
       .subscribe((response: { msg: string, type: string }) => {
-        console.log(response);
         if (response.msg === 'ok') {
           if (response.type === 'admin') {
             this.isAdminStatus.next(true);
@@ -131,7 +150,6 @@ export class AuthService {
           }
         }
         else {
-          console.log(response.msg);
           this.msgBlocked.next(response.msg);
         }
       });

@@ -4,7 +4,7 @@ Error: File to import not found or unreadable: /~src/style/variables.
 
 1: @import "/~src/style/variables";
 2: 
-3: .container {
+3: .container-comm {
 4:   display: flex;
 5:   flex-direction: column;
 6:   align-items: center;
@@ -53,4 +53,4 @@ D:/Ruby25-x64/bin/scss:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: File to import not found or unreadable: /~src/style/variables.\A         on line 1 of comments.component.scss\A \A 1: @import \"/~src/style/variables\";\A 2: \A 3: .container {\A 4:   display: flex;\A 5:   flex-direction: column;\A 6:   align-items: center;"; }
+  content: "Error: File to import not found or unreadable: /~src/style/variables.\A         on line 1 of comments.component.scss\A \A 1: @import \"/~src/style/variables\";\A 2: \A 3: .container-comm {\A 4:   display: flex;\A 5:   flex-direction: column;\A 6:   align-items: center;"; }

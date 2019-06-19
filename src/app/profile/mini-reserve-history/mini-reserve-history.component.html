@@ -1,6 +1,6 @@
 <div
   *ngIf="!isClient"
-  class="container"
+  class="container-info"
   [style.color]="statusInfo==='new'? '#d5cd1e' : statusInfo==='canceled'? '#B51313' : '#3FB52A'">
 
   <div class="status-info"
@@ -25,7 +25,7 @@
 
 <div
   *ngIf="isClient"
-  class="container"
+  class="container-info"
   [style.color]="activeInfo? '#3FB52A' : '#B51313'">
 
   <div

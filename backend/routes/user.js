@@ -1,67 +1,95 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const multer = require('multer');
 const passport = require('passport');
-
-const router = express.Router();
 
 const checkAuth = require('../middleware/check-auth');
 const User = require('../models/user');
 
-router.post('/signup', (req, res, next) => {
-  const notification = false;
-  const {name, email, password} = req.body;
-  User.find({email: email}, (err, doc) => {
-    if (doc.length !== 0) {
-      return res.status(400).json({
-        message: 'User with this email already exist'
-      })
+const router = express.Router();
+
+const MIME_TYPE_MAP = {
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/jpg": "jpg"
+};
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error("Invalid mime type");
+    if (isValid) {
+      error = null;
     }
-  });
-  bcrypt.hash(password, 10)
-    .then(hash => {
-      const user = new User({
-        type: 'user',
-        name,
-        email,
-        password: hash,
-        customer: {
-          imagePath: null,
-          address: null,
-          notification,
-          reservationInfo: {
-            address: null,
-            cleaningType: null,
-            apartmentDescription: {
-              countOfBath: null,
-              countOfStandardRoom: null,
-              countOfLargeRoom: null
-            },
-            cleaningDate: null,
-            preferredTime: null,
-            regularity: null,
-            activityInfo: {
-              status: null,
-              reason: null
-            }
-          }
-        },
-        activeStatus: {
-          status: true,
-          reason: ''
-        }
-      });
-      user.save()
-        .then(result => {
-          res.status(201).json({
-            message: 'User created',
-            result
-          })
-        })
-        .catch(err => {
-          res.status(500).json({err})
-        })
-    })
+    cb(error, "backend/images");
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname
+      .toLowerCase()
+      .split(" ")
+      .join("-");
+    const ext = MIME_TYPE_MAP[file.mimetype];
+    cb(null, name + "-" + Date.now() + "." + ext);
+  }
 });
+
+router.post(
+  '/signup',
+  (req, res, next) => {
+    const notification = false;
+    const {name, email, password} = req.body;
+    User.find({email: email}, (err, doc) => {
+      if (doc.length !== 0) {
+        return res.status(400).json({
+          message: 'User with this email already exist'
+        })
+      }
+    });
+    bcrypt.hash(password, 10)
+      .then(hash => {
+        const user = new User({
+          type: 'user',
+          name,
+          email,
+          password: hash,
+          customer: {
+            imagePath: null,
+            address: null,
+            notification,
+            reservationInfo: {
+              address: null,
+              cleaningType: null,
+              apartmentDescription: {
+                countOfBath: null,
+                countOfStandardRoom: null,
+                countOfLargeRoom: null
+              },
+              cleaningDate: null,
+              preferredTime: null,
+              regularity: null,
+              activityInfo: {
+                status: null,
+                reason: null
+              }
+            }
+          },
+          activeStatus: {
+            status: true,
+            reason: ''
+          }
+        });
+        user.save()
+          .then(result => {
+            res.status(201).json({
+              message: 'User created',
+              result
+            })
+          })
+          .catch(err => {
+            res.status(500).json({err})
+          })
+      })
+  });
 
 router.post('/login', function (req, res, next) {
   passport.authenticate('local', function (err, user, info) {
@@ -132,16 +160,32 @@ router.put('/login/pass', checkAuth, (req, res) => {
     });
 });
 
-router.put('/login/info', checkAuth, (req, res) => {
-  const {name, email, address} = req.body;
-  User.update(
-    {_id: req.user},
-    {$set: {name, email, 'customer.address': address}},
-    (err, result) => {
-      if (err) res.status(500).json({msg: 'something wrong with update user info'});
-      res.status(200).json({msg: 'ok'})
+router.put(
+  '/login/info',
+  multer({storage: storage}).single("imagePath"),
+  checkAuth,
+  (req, res) => {
+    let {name, email, address, imagePath} = req.body;
+    if (req.file) {
+      const url = req.protocol + "://" + req.get("host");
+      imagePath = url + "/images/" + req.file.filename;
     }
-  );
-});
+
+    User.update(
+      {_id: req.user},
+      {
+        $set: {
+          name,
+          email,
+          'customer.address': address,
+          'customer.imagePath': imagePath
+        }
+      },
+      (err, result) => {
+        if (err) res.status(500).json({msg: 'something wrong with update user info'});
+        res.status(200).json({msg: 'ok'})
+      }
+    );
+  });
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import {Component, DoCheck, OnChanges, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CompanyService} from '../shared/service/company.service';
 import {Company} from '../shared/model/company.model';
@@ -46,6 +46,7 @@ export class CompanyListComponent implements OnInit {
   }
 
   searchByName() {
+    this.type = this.cleaningTypeArray[0].value;
     this.companies = this.COMPANY.filter((el) => {
       if (!el.name) return false;
       return !el.name.indexOf(this.nameForm.value.name);
@@ -72,6 +73,7 @@ export class CompanyListComponent implements OnInit {
     this.companyService.selectCompany(company);
     this.router.navigate(['/company-item', company.name]);
   }
+
   returnBack(e, block) {
     if (!block.contains(e.target)) this.router.navigate(['/']);
   }

@@ -27,7 +27,6 @@ router.post('/add-comment', checkAuth, (req, res, next) => {
     });
 
     comment.save().then(result => {
-
       Comments.find(
         {cleaningService_id}, {rate: 1}, (err, doc) => {
           const length = doc.length;

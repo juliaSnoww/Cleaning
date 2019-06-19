@@ -59,16 +59,10 @@
       type="file"
       hidden
       #filePicker
-      formControlName="logo"
       (change)="onImagePicked($event)">
     <div class="logo-preview" *ngIf="logoPreview !== '' && logoPreview">
       <img [src]="logoPreview">
     </div>
-    <!--<p-->
-    <!--class="error"-->
-    <!--*ngIf="signupFormCompany.get('logo').invalid && signupFormCompany.get('logo').touched">-->
-    <!--Please enter a valid email-->
-    <!--</p>-->
   </div>
 
   <div>

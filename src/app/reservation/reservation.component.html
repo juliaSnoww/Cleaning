@@ -54,11 +54,11 @@
       <div formGroupName="apartmentDescription">
         <p>Rooms</p>
         Large room( > 35 m2)
-        <input type="number" formControlName="countOfLargeRoom"> <br>
+        <input type="number" formControlName="countOfLargeRoom" OnlyInteger="true" maxlength="2"> <br>
         Regular room
-        <input type="number" formControlName="countOfStandardRoom"><br>
+        <input type="number" formControlName="countOfStandardRoom" OnlyInteger="true" maxlength="2"><br>
         Bathroom
-        <input type="number" formControlName="countOfBath">
+        <input type="number" formControlName="countOfBath" OnlyInteger="true" maxlength="2">
       </div>
 
       <div>

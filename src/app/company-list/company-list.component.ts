@@ -4,6 +4,7 @@ import {CompanyService} from '../shared/service/company.service';
 import {Company} from '../shared/model/company.model';
 import {Router} from '@angular/router';
 import {FormControl, FormGroup} from '@angular/forms';
+import {PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-company-list',
@@ -12,7 +13,10 @@ import {FormControl, FormGroup} from '@angular/forms';
 })
 export class CompanyListComponent implements OnInit {
   private companies: object;
-  private COMPANY;
+  totalPost = 10;
+  currentPage = 1;
+  postPerPage = 10;
+  pageSizeOpt = [2, 5, 10];
   name;
   nameForm;
   cleaningTypeArray = [
@@ -37,28 +41,34 @@ export class CompanyListComponent implements OnInit {
     this.nameForm = new FormGroup({
       name: new FormControl('')
     });
-    this.companyService.getCompanies().subscribe(
+    this.companyService.getCompanies(this.postPerPage, 1).subscribe(
       (res: Company) => {
-        this.COMPANY = res.company;
-        this.companies = this.COMPANY;
+        this.totalPost = res.maxCompany;
+        this.companies = res.company;
       }
     );
   }
 
   searchByName() {
     this.type = this.cleaningTypeArray[0].value;
-    this.companies = this.COMPANY.filter((el) => {
-      if (!el.name) return false;
-      return !el.name.indexOf(this.nameForm.value.name);
+    this.companyService.getCompaniesByName(this.nameForm.value.name).subscribe((foundCompanies: Array<any>) => {
+      this.companies = foundCompanies;
+      this.totalPost = foundCompanies.length;
     });
   }
 
   searchByType(value) {
     if (value === 'all') {
-      this.companies = this.COMPANY;
+      this.companyService.getCompanies(this.postPerPage, 1).subscribe(
+        (res: Company) => {
+          this.totalPost = res.maxCompany;
+          this.companies = res.company;
+        }
+      );
     } else {
-      this.companies = this.COMPANY.filter((el) => {
-        return this.type in el.company.costPerUnit.type;
+      this.companyService.getCompaniesByType(value).subscribe((foundCompanies: Array<any>) => {
+        this.companies = foundCompanies;
+        this.totalPost = foundCompanies.length;
       });
     }
     this.nameForm.reset();
@@ -76,6 +86,16 @@ export class CompanyListComponent implements OnInit {
 
   returnBack(e, block) {
     if (!block.contains(e.target)) this.router.navigate(['/']);
+  }
+
+  onChangedPage(pageData: PageEvent) {
+    this.currentPage = pageData.pageIndex + 1;
+    this.postPerPage = pageData.pageSize;
+    this.companyService.getCompanies(this.postPerPage, this.currentPage).subscribe(
+      (res: Company) => {
+        this.companies = res.company;
+      }
+    );
   }
 
 }

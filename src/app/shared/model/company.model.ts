@@ -6,6 +6,7 @@ export interface Company {
     };
     logo: string;
   };
+  maxCompany:number;
   name: string;
   _id: string;
 }

@@ -4,9 +4,9 @@
       *ngIf="profileForm"
       [formGroup]="profileForm"
       (ngSubmit)="onSubmit()">
-      <div class="container-info">
+      <div class="container-info" formGroupName="info">
 
-        <div class="photo">
+        <div class="photo" >
           <img [src]="imageUrl || '../../../assets/13441586.jpeg'" alt="prianyk" (click)="filePicker.click()">
           <input
             type="file"
@@ -14,8 +14,7 @@
             #filePicker
             (change)="onImagePicked($event)">
         </div>
-
-        <div class="info" formGroupName="info">
+        <div class="info">
 
           <div>
             <p>Name</p>

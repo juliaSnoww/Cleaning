@@ -31,6 +31,7 @@ const userSchema = mongoose.Schema({
     logo: String,
     address: String,
     description: String,
+    cleaningTypeArray: Array,
     costPerUnit: {
       rooms: {
         bath: Number,

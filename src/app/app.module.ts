@@ -1,7 +1,8 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
+import {MatPaginatorModule} from '@angular/material';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './auth/login/login.component';
@@ -10,6 +11,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {HeaderComponent} from './header/header.component';
 import {ProfileComponent} from './profile/profile.component';
+
 import {AuthInterceptor} from './auth/auth.interceptor';
 import {SignupClientComponent} from './auth/signup/signup-client/signup-client.component';
 import {SignupCompanyComponent} from './auth/signup/signup-company/signup-company.component';
@@ -19,16 +21,17 @@ import {ReservationComponent} from './reservation/reservation.component';
 import {CompanyListComponent} from './company-list/company-list.component';
 import {CompanyItemComponent} from './company-list/company-item/company-item.component';
 import {ReservationSubmitComponent} from './reservation/reservation-submit/reservation-submit.component';
-import { ReservationHistoryComponent } from './profile/reservation-history/reservation-history.component';
-import { MiniReserveHistoryComponent } from './profile/mini-reserve-history/mini-reserve-history.component';
-import { CommentsComponent } from './comments/comments.component';
-import { OffersComponent } from './offers/offers.component';
-import { CompanyComponent } from './profile/company/company.component';
-import { ActiveOrdersListComponent } from './active-orders-list/active-orders-list.component';
-import { OrderComponent } from './active-orders-list/order/order.component';
-import { CustomerComponent } from './admin/customer/customer.component';
-import { UserItemComponent } from './admin/user-item/user-item.component';
-import { OnlyIntegerDirective } from './shared/directive/only-integer.directive';
+import {ReservationHistoryComponent} from './profile/reservation-history/reservation-history.component';
+import {MiniReserveHistoryComponent} from './profile/mini-reserve-history/mini-reserve-history.component';
+import {CommentsComponent} from './comments/comments.component';
+import {OffersComponent} from './offers/offers.component';
+import {CompanyComponent} from './profile/company/company.component';
+import {ActiveOrdersListComponent} from './active-orders-list/active-orders-list.component';
+import {OrderComponent} from './active-orders-list/order/order.component';
+import {CustomerComponent} from './admin/customer/customer.component';
+import {UserItemComponent} from './admin/user-item/user-item.component';
+import {OnlyIntegerDirective} from './shared/directive/only-integer.directive';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -61,7 +64,9 @@ import { OnlyIntegerDirective } from './shared/directive/only-integer.directive'
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    BrowserAnimationsModule,
+    MatPaginatorModule
   ],
   entryComponents: [
     ReservationSubmitComponent

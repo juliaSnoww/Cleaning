@@ -1,10 +1,15 @@
 <div class="page" *ngIf="customerArray">
   <div class="container-page">
-    <h2 style="text-align: center; margin: 1rem">{{userPath}} list</h2>
-    <div class="container">
+    <div class="info">
+      <h2 style="text-align: center; margin: 1rem">{{userPath}} list</h2>
       <div class="user-container" *ngFor="let item of customerArray">
         <app-user-item [company]="item"></app-user-item>
       </div>
     </div>
+    <mat-paginator
+      [length]="totalOffer"
+      [pageSize]="offerPerPage"
+      [pageSizeOptions]="pageSizeOpt"
+      (page)="onChangedPage($event)"></mat-paginator>
   </div>
 </div>

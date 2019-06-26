@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {PageEvent} from '@angular/material';
+
 import {ReserveService} from '../shared/service/reserve.service';
 import {CompanyService} from '../shared/service/company.service';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-offers',
@@ -10,6 +12,11 @@ import {Router} from '@angular/router';
 })
 export class OffersComponent implements OnInit {
   private companyArray;
+  private COMPANY;
+  totalOffer = 10;
+  currentPage = 1;
+  offerPerPage = 2;
+  pageSizeOpt = [2, 5, 10];
 
   constructor(private reserveService: ReserveService,
               private companyService: CompanyService,
@@ -17,8 +24,14 @@ export class OffersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.reserveService.getAllOffers().subscribe(res => {
-      this.companyArray = res;
+    this.reserveService.getAllOffers().subscribe((res: Array<any>) => {
+      this.COMPANY = res.sort((a, b) => {
+        if (a.price > b.price) return 1;
+        if (a.price < b.price) return -1;
+        return 0;
+      });
+      this.companyArray = this.COMPANY.slice(0, this.offerPerPage);
+      this.totalOffer = this.COMPANY.length;
     });
   }
 
@@ -30,5 +43,27 @@ export class OffersComponent implements OnInit {
   order(company) {
     this.companyService.selectCompany(company);
     this.router.navigate(['/reservation']);
+  }
+
+  sortBy(item: string) {
+    item = (item === 'price') ? 'price' : 'company[rate]';
+    if (item === 'price')
+      this.COMPANY = this.COMPANY.sort((a, b) => {
+        if (a[item] > b[item]) return 1;
+        if (a[item] < b[item]) return -1;
+        return 0;
+      });
+    else this.COMPANY = this.COMPANY.sort((a, b) => {
+      if (a.company.rate > b.company.rate) return 1;
+      if (a.company.rate < b.company.rate) return -1;
+      return 0;
+    });
+    this.companyArray = this.COMPANY.slice(0, this.offerPerPage);
+  }
+
+  onChangedPage(pageData: PageEvent) {
+    this.currentPage = pageData.pageIndex + 1;
+    this.offerPerPage = pageData.pageSize;
+    this.companyArray = this.COMPANY.slice((this.currentPage - 1) * this.offerPerPage, this.currentPage * this.offerPerPage);
   }
 }

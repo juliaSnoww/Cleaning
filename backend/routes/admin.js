@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
+const transporter = require('../config/transport');
 const checkAuth = require('../middleware/check-auth');
 const User = require('../models/user');
 
@@ -35,6 +36,19 @@ router.post('/block', (req, res) => {
       'activeStatus.reason': reason
     }
   }).then(company => {
+    const mailOptions = {
+      from: 'juliasnoww@mail.ru',
+      to: 'juliasnoww@mail.ru',
+      subject: 'You was blocked',
+      html: '<p>You was blocked<br> Reason: ' + reason + '</p>'// plain text body
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return console.log(error);
+      }
+      console.log('Message sent: ' + info.response);
+    });
     res.status(200).json('deleted');
   }).catch(err => console.log(err))
 });

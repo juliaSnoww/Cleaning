@@ -6,11 +6,18 @@
   justify-content: center;
   .container-page {
     width: 60%;
-    min-width: 40rem;
+    min-width: 700px;
+    padding: 1rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     box-shadow: 1px 1px 10px $smoke;
     background-color: whitesmoke;
-    padding: 1rem;
-    .container {
+
+    .info {
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -26,20 +33,28 @@
 @media (max-width: 720px) {
   .page {
     .container-page {
-      width: 80%;
-      min-width: 400px;
+      width: 100%;
+      min-width: 500px;
     }
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 550px) {
   .page {
     .container-page {
       min-width: 300px;
-      padding: 0;
+    }
+  }
+}
+
+@media (max-width: 380px) {
+  .page {
+    .container-page {
+      min-width: 250px;
       .user-container {
         width: 100%;
       }
     }
   }
 }
+

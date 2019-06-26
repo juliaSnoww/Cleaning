@@ -1,6 +1,23 @@
 <div class="page" *ngIf="companyArray">
   <div class="container">
 
+    <div class="search-container">
+      <h3>Sort by</h3>
+      <label
+        (click)="radioBtnRate.click();sortBy('rate')"
+        [style.borderBottom]="radioBtnRate.checked? '2px solid #00ADB5': '1px solid black' ">
+        Rate
+      </label>
+      <input type="radio" value="rate" name="sort" #radioBtnRate hidden>
+      <label
+        (click)="radioBtnPrice.click(); sortBy('price')"
+        [style.borderBottom]="radioBtnPrice.checked? '2px solid #00ADB5': '1px solid black' ">
+        Price
+      </label>
+      <input type="radio" value="price" name="sort" #radioBtnPrice hidden>
+
+    </div>
+
     <div class="company-container" *ngFor="let item of companyArray">
 
       <div class="company-info">
@@ -8,7 +25,7 @@
         <img src="../../assets/13441586.jpeg">
 
         <div class="company-text-info">
-          <h3><a (click)="showCompany(item)">{{item.name}}</a> {{item.company.rate}}</h3>
+          <h3><a (click)="showCompany(item)">{{item.name}}</a> ✡ {{item.company.rate}}</h3>
           <p>{{item.company.address}}</p>
         </div>
 
@@ -19,7 +36,10 @@
       </div>
 
     </div>
-
+    <mat-paginator
+      [length]="totalOffer"
+      [pageSize]="offerPerPage"
+      [pageSizeOptions]="pageSizeOpt"
+      (page)="onChangedPage($event)"></mat-paginator>
   </div>
 </div>
-<router-outlet name="modal"></router-outlet>

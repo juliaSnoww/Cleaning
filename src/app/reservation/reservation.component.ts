@@ -1,4 +1,4 @@
-import {AfterContentChecked, AfterContentInit, AfterViewChecked, Component, DoCheck, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';

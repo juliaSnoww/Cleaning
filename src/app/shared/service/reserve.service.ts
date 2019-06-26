@@ -45,12 +45,13 @@ export class ReserveService {
       .subscribe(res => console.log(res));
   }
 
-  getAllOffers() {
+  getAllOffers(sortItem = 'price') {
     const params = new HttpParams()
       .set('bath', this.form.apartmentDescription.countOfBath)
       .set('standard', this.form.apartmentDescription.countOfStandardRoom)
       .set('large', this.form.apartmentDescription.countOfLargeRoom)
-      .set('type', this.form.cleaningType);
+      .set('type', this.form.cleaningType)
+      .set('sortItem', sortItem);
     return this.http.get('http://localhost:3000/api/service/offers', {params});
   }
 

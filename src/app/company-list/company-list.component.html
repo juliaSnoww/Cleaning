@@ -29,5 +29,11 @@
       </div>
     </div>
 
+    <mat-paginator
+      [length]="totalPost"
+      [pageSize]="postPerPage"
+      [pageSizeOptions]="pageSizeOpt"
+      (page)="onChangedPage($event)"></mat-paginator>
+
   </div>
 </div>

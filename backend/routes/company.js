@@ -1,38 +1,14 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
-const passport = require('passport');
 
 const router = express.Router();
 
+const transporter = require('../config/transport');
+const storage = require('../config/storage');
 const checkAuth = require('../middleware/check-auth');
 const User = require('../models/user');
 const Service = require('../models/services');
-
-const MIME_TYPE_MAP = {
-  'image/png': 'png',
-  'image/jpeg': 'jpg',
-  'image/jpg': 'jpg'
-};
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const isValid = MIME_TYPE_MAP[file.mimetype];
-    let error = new Error('Invalid mime type');
-    if (isValid) {
-      error = null;
-    }
-    cb(error, "backend/images");
-  },
-  filename: (req, file, cb) => {
-    const name = file.originalname
-      .toLowerCase()
-      .split(" ")
-      .join("-");
-    const ext = MIME_TYPE_MAP[file.mimetype];
-    cb(null, name + "-" + Date.now() + "." + ext);
-  }
-});
 
 router.post(
   '/signup',
@@ -47,6 +23,7 @@ router.post(
       password
     } = req.body;
     const costPerUnit = JSON.parse(req.body.costPerUnit);
+    const cleaningTypeArray = Object.keys(costPerUnit.type).map(item => item);
     let logo = req.body.imagePath;
     if (req.file) {
       const url = req.protocol + "://" + req.get("host");
@@ -64,7 +41,8 @@ router.post(
             logo,
             address,
             costPerUnit,
-            rate
+            rate,
+            cleaningTypeArray
           },
           activeStatus: {
             status: true,
@@ -73,6 +51,19 @@ router.post(
         });
         company.save()
           .then(result => {
+            const mailOptions = {
+              from: 'juliasnoww@mail.ru',
+              to: 'juliasnoww@mail.ru',
+              subject: 'You are registered',
+              html: '<p>You was registered in Cleaning Service app</p>'
+            };
+
+            transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                return console.log(error);
+              }
+              console.log('Message sent: ' + info.response);
+            });
             res.status(201).json({
               message: 'Company created',
               result
@@ -137,22 +128,59 @@ router.get('/profile', checkAuth, (req, res) => {
 });
 
 router.get('/get-all-company', (req, res) => {
-  User.find({type: 'company', 'activeStatus.status': true}).exec(function (err, company) {
+  const currentPage = +req.query.currentPage;
+  const pageSize = +req.query.pageSize;
+  let count;
+  User.find({type: 'company', 'activeStatus.status': true}).count().then(doc => count = doc);
+  const postQuery = User.find({type: 'company', 'activeStatus.status': true});
+  if (pageSize && currentPage) {
+    postQuery
+      .skip(pageSize * (currentPage - 1))
+      .limit(pageSize)
+  }
+  postQuery.exec(function (err, company) {
     if (err) res.status(500).json({err});
-    res.status(200).json({company})
+    res.status(200).json({
+      message: 'Company fetched',
+      company,
+      maxCompany: count
+    })
   });
 });
 
 router.get('/get-company', (req, res) => {
   const companyName = req.query.name;
   User.findOne(
-    {name: companyName, 'activeStatus.status': true},
+    {name: companyName, 'activeStatus.status': true, type: 'company'},
     {name: 1, company: 1},
     (err, company) => {
       if (err) res.status(500).json({err});
       res.status(200).json(company);
     }
   )
+});
+
+router.get('/get-companies-by', (req, res) => {
+  let {searchType, searchItem} = req.query;
+  if (searchType === 'name') {
+    searchItem = '^' + searchItem;
+    User.find(
+      {name: {$regex: searchItem}, 'activeStatus.status': true, type: 'company'},
+      (err, company) => {
+        if (err) res.status(500).json({err});
+        res.status(200).json(company);
+      }
+    )
+  } else {
+    User.find(
+      {'company.cleaningTypeArray': {$exists: "true", $in: [searchItem]}, 'activeStatus.status': true, type: 'company'},
+      (err, company) => {
+        if (err) res.status(500).json({err});
+        res.status(200).json(company);
+      }
+    )
+  }
+
 });
 
 router.get('/orders', checkAuth, (req, res) => {

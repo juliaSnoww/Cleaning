@@ -51,7 +51,8 @@ export class ReserveService {
       .set('standard', this.form.apartmentDescription.countOfStandardRoom)
       .set('large', this.form.apartmentDescription.countOfLargeRoom)
       .set('type', this.form.cleaningType)
-      .set('sortItem', sortItem);
+      .set('sortItem', sortItem)
+      .set('address', this.form.address);
     return this.http.get('http://localhost:3000/api/service/offers', {params});
   }
 

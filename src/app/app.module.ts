@@ -1,22 +1,24 @@
 import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
+import {AgmCoreModule, GoogleMapsAPIWrapper} from '@agm/core';
+import {CookieService} from 'ngx-cookie-service';
 import {MatPaginatorModule} from '@angular/material';
 import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {LoginComponent} from './auth/login/login.component';
 import {SignupComponent} from './auth/signup/signup.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {AuthInterceptor} from './auth/auth.interceptor';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+
 import {HeaderComponent} from './header/header.component';
 import {ProfileComponent} from './profile/profile.component';
-
-import {AuthInterceptor} from './auth/auth.interceptor';
+import {AppComponent} from './app.component';
+import {LoginComponent} from './auth/login/login.component';
 import {SignupClientComponent} from './auth/signup/signup-client/signup-client.component';
 import {SignupCompanyComponent} from './auth/signup/signup-company/signup-company.component';
 import {ServiceTypesComponent} from './auth/signup/signup-company/service-types/service-types.component';
-import {CookieService} from 'ngx-cookie-service';
 import {ReservationComponent} from './reservation/reservation.component';
 import {CompanyListComponent} from './company-list/company-list.component';
 import {CompanyItemComponent} from './company-list/company-item/company-item.component';
@@ -31,7 +33,6 @@ import {OrderComponent} from './active-orders-list/order/order.component';
 import {CustomerComponent} from './admin/customer/customer.component';
 import {UserItemComponent} from './admin/user-item/user-item.component';
 import {OnlyIntegerDirective} from './shared/directive/only-integer.directive';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     NgbModule,
     BrowserAnimationsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDDHCf3YJCEtgbYqbSFEEL2F7zYhpvl1UI'
+    })
   ],
   entryComponents: [
     ReservationSubmitComponent
@@ -77,7 +81,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       useClass: AuthInterceptor,
       multi: true
     },
-    CookieService
+    CookieService,
+    GoogleMapsAPIWrapper
   ],
   bootstrap: [AppComponent]
 })

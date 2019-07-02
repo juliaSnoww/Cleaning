@@ -44,13 +44,19 @@ export class ReservationComponent implements OnInit, OnDestroy {
   cleaningTypeArray = [
     {value: 'standard', display: 'Standard', img: './assets/type cleaning/color/1sweep.svg'},
     {value: 'general', display: 'General', img: './assets/type cleaning/color/1washbowl.svg'},
-    {value: 'afterRenovation', display: 'Renovation', img: './assets/type cleaning/color/1hammer.svg'},
+    {value: 'afterConstruction', display: 'Renovation', img: './assets/type cleaning/color/1hammer.svg'},
     {value: 'carpetCleaning', display: 'Carpet', img: './assets/type cleaning/color/1rug.svg'},
     {value: 'officeCleaning', display: 'Office', img: './assets/type cleaning/color/1desk.svg'},
     {value: 'furnitureCleaning', display: 'Furniture', img: './assets/type cleaning/color/1sofa.svg'},
     {value: 'industrialCleaning', display: 'Industrial', img: './assets/type cleaning/color/floor.svg'},
     {value: 'poolCleaning', display: 'Pool', img: './assets/type cleaning/color/1pool.svg'}
   ];
+
+  lat = 52.439201858;
+  lng = 30.999526048;
+  zoom = 13;
+  locationChosen = false;
+  center = '';
 
   constructor(private fb: FormBuilder,
               private http: HttpClient,
@@ -82,9 +88,6 @@ export class ReservationComponent implements OnInit, OnDestroy {
       })
     });
 
-    const form = this.reserveService.getReservationForm();
-    if (form) this.reservationForm.patchValue(form);
-
     this.isAuth = this.authService.getIsAuth();
     if (this.isAuth) {
       this.userInfoSubscription = this.authService.getJustUserInfo()
@@ -99,8 +102,17 @@ export class ReservationComponent implements OnInit, OnDestroy {
             });
           this.reservationForm.controls.userInfo
             .patchValue({email: res.userInfo.email});
-          this.saveForm();
+          const form = this.reserveService.getReservationForm();
+          if (form) {
+            this.reservationForm.patchValue(form);
+            this.reservationForm.patchValue({address: form.address});
+          }
         });
+    }
+    const form = this.reserveService.getReservationForm();
+    if (form) {
+      this.reservationForm.patchValue(form);
+      this.reservationForm.patchValue({address: form.address});
     }
 
     this.isCompanySelected = this.companyService.getCompanySelectedStatus();
@@ -168,11 +180,37 @@ export class ReservationComponent implements OnInit, OnDestroy {
     this.reservationForm.controls.cleaningServiceInfo.setValue(null);
     if (this.reservationForm.valid) {
       this.saveForm();
+      console.log(this.reservationForm.value);
       this.router.navigate(['/offers']);
     } else {
       this.emptyField = true;
       return;
     }
+  }
+
+  onChooseLocation(event) {
+    this.lat = event.coords.lat;
+    this.lng = event.coords.lng;
+    const center = {lat: this.lat, lng: this.lng};
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     'Access-Control-Allow-Origin': 'http://localhost:4200',
+    //     'Access-Control-Allow-Headers': 'Content-Type',
+    //     'Access-Control-Allow-Credentials': 'true'
+    //   }),
+    //   withCredentials: true
+    // };
+    // const headers = new HttpHeaders();
+    // headers.set('Access-Control-Allow-Origin', 'http://localhost:4200');
+    // this.http.get('http://maps.googleapis.com/maps/api/geocode/json?latlng=55.75320193022759,37.61922086773683&sensor=false&language=ru',
+    //   httpOptions)
+    //   .subscribe(res => {
+    //     console.log(res);
+    //   });
+    this.reservationForm.controls.address.setValue(center);
+    let res = this.lat.toFixed(4) + ',' + this.lng.toFixed(4);
+    this.reservationForm.patchValue({address: res});
+    this.locationChosen = true;
   }
 
   ngOnDestroy() {

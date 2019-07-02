@@ -26,20 +26,6 @@ mongoose
     console.log('Connection failed');
   });
 
-// const mailOptions = {
-//   from: 'juliasnoww@mail.ru', // sender address
-//   to: 'juliasnoww@mail.ru', // list of receivers
-//   subject: 'Subject of your email', // Subject line
-//   html: '<p>Your html here</p>'// plain text body
-// };
-//
-// transporter.sendMail(mailOptions, (error, info) => {
-//   if(error){
-//     return console.log(error);
-//   }
-//   console.log('Message sent: ' + info.response);
-// });
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use('/images',express.static(path.join('backend/images')));

@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {AuthClientGuard} from './shared/guard/auth-client.guard';
 
 import {LoginComponent} from './auth/login/login.component';
 import {SignupComponent} from './auth/signup/signup.component';
@@ -15,12 +14,13 @@ import {CompanyItemComponent} from './company-list/company-item/company-item.com
 import {OffersComponent} from './offers/offers.component';
 import {ActiveOrdersListComponent} from './active-orders-list/active-orders-list.component';
 import {OrderComponent} from './active-orders-list/order/order.component';
+import {CompanyComponent} from './profile/company/company.component';
+import {CustomerComponent} from './admin/customer/customer.component';
 
+import {AuthClientGuard} from './shared/guard/auth-client.guard';
 import {ReserveGuard} from './shared/guard/reserve.guard';
 import {CompanyGuard} from './shared/guard/company.guard';
 import {AuthCompanyGuard} from './shared/guard/auth-company.guard';
-import {CompanyComponent} from './profile/company/company.component';
-import {CustomerComponent} from './admin/customer/customer.component';
 import {AdminGuard} from './shared/guard/admin.guard';
 
 const routes: Routes = [

@@ -62,8 +62,16 @@
       </div>
 
       <div>
-        <p>Your address
+        <p >Your address
           <input type="text" formControlName="address"></p>
+        <agm-map
+          [latitude]="lat"
+          [zoom]="zoom"
+          [longitude]="lng"
+          style="height: 300px;"
+          (mapClick)="onChooseLocation($event)">
+          <agm-marker *ngIf="locationChosen" [latitude]="lat" [longitude]="lng"></agm-marker>
+        </agm-map>
       </div>
 
       <div *ngIf="!isAuth" formGroupName="userInfo">

@@ -46,13 +46,21 @@ export class OffersComponent implements OnInit {
   }
 
   sortBy(item: string) {
-    item = (item === 'price') ? 'price' : 'company[rate]';
-    if (item === 'price')
+    item = (item === 'price') ? 'price' : (item === 'dst') ? 'distance' : 'company[rate]';
+    console.log(item)
+    if (item === 'price' || item === 'distance')
       this.COMPANY = this.COMPANY.sort((a, b) => {
+        console.log(a[item]);
         if (a[item] > b[item]) return 1;
         if (a[item] < b[item]) return -1;
         return 0;
       });
+    // if (item === 'dst')
+    //   this.COMPANY = this.COMPANY.sort((a, b) => {
+    //     if (a.company.address > b.company.rate) return 1;
+    //     if (a.company.rate < b.company.rate) return -1;
+    //     return 0;
+    //   });
     else this.COMPANY = this.COMPANY.sort((a, b) => {
       if (a.company.rate > b.company.rate) return 1;
       if (a.company.rate < b.company.rate) return -1;

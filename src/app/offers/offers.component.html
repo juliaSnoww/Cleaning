@@ -15,6 +15,12 @@
         Price
       </label>
       <input type="radio" value="price" name="sort" #radioBtnPrice hidden>
+      <label
+        (click)="radioBtnDst.click(); sortBy('dst')"
+        [style.borderBottom]="radioBtnDst.checked? '2px solid #00ADB5': '1px solid black' ">
+        Distance
+      </label>
+      <input type="radio" value="price" name="sort" #radioBtnDst hidden>
 
     </div>
 
@@ -27,6 +33,7 @@
         <div class="company-text-info">
           <h3><a (click)="showCompany(item)">{{item.name}}</a> ✡ {{item.company.rate}}</h3>
           <p>{{item.company.address}}</p>
+          <p>{{item.distance}}</p>
         </div>
 
       </div>

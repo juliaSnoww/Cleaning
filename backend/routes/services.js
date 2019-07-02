@@ -106,7 +106,7 @@ router.put('/order', checkAuth, (req, res) => {
 });
 
 router.get('/offers', (req, res) => {
-  const {bath, standard, large, type: selectedType} = req.query;
+  const {bath, standard, large, type: selectedType, address} = req.query;
   const queryParam = {};
   const param = 'company.costPerUnit.type.' + selectedType;
   queryParam[param] = {$exists: true};
@@ -123,6 +123,14 @@ router.get('/offers', (req, res) => {
       const price = typeCost * (rooms.bath * bath +
         rooms.standard * standard + rooms.large * large);
       item.price = price;
+      if (el.company.address) {
+        console.log(address)
+        let lt1 = +address.split(',')[0];
+        let ln1 = +address.split(',')[1];
+        let lt2 = +el.company.address.split(',')[0];
+        let ln2 = +el.company.address.split(',')[1];
+        if (lt1 && lt2) item['distance'] = calculateTheDistance(lt1, ln1, lt2, ln2);
+      }
       return item;
     });
     res.status(200).json(companyArray)
@@ -153,5 +161,28 @@ router.post('/price', (req, res) => {
     res.status(401).json({message: 'user is not defined', err})
   })
 });
+
+function calculateTheDistance(lt1, ln1, lt2, ln2) {
+  const EARTH_RADIUS = 6372795;
+  let lat1 = lt1 * Math.PI / 180;
+  let lat2 = lt2 * Math.PI / 180;
+  let long1 = ln1 * Math.PI / 180;
+  let long2 = ln2 * Math.PI / 180;
+
+  let cl1 = Math.cos(lat1);
+  let cl2 = Math.cos(lat2);
+  let sl1 = Math.sin(lat1);
+  let sl2 = Math.sin(lat2);
+  let delta = long2 - long1;
+  let cdelta = Math.cos(delta);
+  let sdelta = Math.sin(delta);
+  let y = Math.sqrt((cl2 * sdelta) ** 2 + Math.pow(cl1 * sl2 - sl1 * cl2 * cdelta, 2));
+  let x = sl1 * sl2 + cl1 * cl2 * cdelta;
+
+  let ad = Math.atan2(y, x);
+  let dist = ad * EARTH_RADIUS;
+
+  return dist;
+}
 
 module.exports = router;

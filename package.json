@@ -34,7 +34,7 @@
     "connect-redis": "^3.4.1",
     "cookie-parser": "^1.4.4",
     "core-js": "^2.5.4",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-session": "^1.16.1",
     "mongoose": "^5.2.8",
     "mongoose-unique-validator": "^2.0.3",
